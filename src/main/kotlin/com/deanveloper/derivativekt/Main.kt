@@ -7,8 +7,9 @@ import java.math.BigDecimal
  */
 fun main(vararg args: String) {
     println(
-            ExponentialExpression(
+            ExponentialExpression(charArrayOf('x'),
                     AdditionExpression(
+                            charArrayOf('x'),
                             Value(BigDecimal.valueOf(5)),
                             Variable('x')
                     ),

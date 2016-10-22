@@ -26,6 +26,10 @@ import java.math.RoundingMode
  * The number of significant figures to calculate to.
  */
 var defaultScale = 50
+    set(value) {
+        recalculateConstants()
+        field = value
+    }
 
 /**
  * Compute x^exponent to a given scale.  Uses the same
