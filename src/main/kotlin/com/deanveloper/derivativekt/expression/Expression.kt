@@ -18,15 +18,21 @@ abstract class Expression(val vars: CharArray, val isNegative: Boolean = false) 
 
     abstract fun derive(variable: Char): Expression
 
+    abstract fun simplify(): Expression
+
+    abstract operator fun unaryMinus(): Expression
+
     abstract class TwoPartExpression(
             variables: CharArray,
             val f: Expression,
             val g: Expression,
-            negative: Boolean = false)
-    : Expression(variables, negative)
+            negative: Boolean = false
+    ) : Expression(variables, negative)
 
-    abstract fun simplify(): Expression
-
-    abstract operator fun unaryMinus(): Expression
+    abstract class TrigExpression(
+            variables: CharArray,
+            val f: Expression,
+            negative: Boolean = false
+    ) : Expression(variables, negative)
 }
 

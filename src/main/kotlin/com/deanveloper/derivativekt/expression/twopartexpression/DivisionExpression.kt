@@ -4,7 +4,12 @@ import com.deanveloper.derivativekt.expression.Expression
 import com.deanveloper.derivativekt.expression.Value
 import java.math.BigDecimal
 
-class DivisionExpression(variables: CharArray, f: Expression, g: Expression, negative: Boolean = false) : Expression.TwoPartExpression(variables, f, g, negative) {
+class DivisionExpression(
+        variables: CharArray,
+        f: Expression,
+        g: Expression,
+        negative: Boolean = false
+) : Expression.TwoPartExpression(variables, f, g, negative) {
     constructor(variable: Char, f: Expression, g: Expression) : this(charArrayOf(variable), f, g)
 
     override fun execute(args: Map<Char, Expression>): DivisionExpression {

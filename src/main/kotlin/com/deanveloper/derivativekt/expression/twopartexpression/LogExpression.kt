@@ -6,7 +6,12 @@ import com.deanveloper.derivativekt.expression.Value
 import com.deanveloper.derivativekt.ln
 import java.math.BigDecimal
 
-class LogExpression(variables: CharArray, val base: Expression, f: Expression, negative: Boolean = false) : Expression.TwoPartExpression(variables, f, base, negative) {
+class LogExpression(
+        variables: CharArray,
+        val base: Expression,
+        f: Expression,
+        negative: Boolean = false
+) : Expression.TwoPartExpression(variables, f, base, negative) {
 
     constructor(variable: Char, f: Expression, g: Expression) : this(charArrayOf(variable), f, g)
 

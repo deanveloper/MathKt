@@ -6,7 +6,12 @@ import com.deanveloper.derivativekt.expression.Value
 import com.deanveloper.derivativekt.pow
 import java.math.BigDecimal
 
-class ExponentialExpression(variables: CharArray, f: Expression, g: Expression, negative: Boolean = false) : Expression.TwoPartExpression(variables, f, g, negative) {
+class ExponentialExpression(
+        variables: CharArray,
+        f: Expression,
+        g: Expression,
+        negative: Boolean = false
+) : Expression.TwoPartExpression(variables, f, g, negative) {
 
     constructor(variable: Char, f: Expression, g: Expression) : this(charArrayOf(variable), f, g)
 
