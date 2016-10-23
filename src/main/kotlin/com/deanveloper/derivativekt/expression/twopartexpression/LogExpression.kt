@@ -1,6 +1,8 @@
-package com.deanveloper.derivativekt.expression
+package com.deanveloper.derivativekt.expression.twopartexpression
 
 import com.deanveloper.derivativekt.E
+import com.deanveloper.derivativekt.expression.Expression
+import com.deanveloper.derivativekt.expression.Value
 import com.deanveloper.derivativekt.ln
 import java.math.BigDecimal
 
