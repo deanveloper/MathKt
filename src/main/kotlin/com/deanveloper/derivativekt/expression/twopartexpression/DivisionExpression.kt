@@ -10,7 +10,12 @@ class DivisionExpression(
         g: Expression,
         negative: Boolean = false
 ) : Expression.TwoPartExpression(variables, f, g, negative) {
-    constructor(variable: Char, f: Expression, g: Expression) : this(charArrayOf(variable), f, g)
+    constructor(
+            variable: Char,
+            f: Expression,
+            g: Expression,
+            negative: Boolean = false
+    ) : this(charArrayOf(variable), f, g, negative)
 
     override fun execute(args: Map<Char, Expression>): DivisionExpression {
         return DivisionExpression(vars, f.execute(args), g.execute(args))
