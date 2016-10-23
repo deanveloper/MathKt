@@ -7,6 +7,7 @@ class Value(val value: BigDecimal) : Expression(charArrayOf(), value.signum() ==
     override fun derive(variable: Char) = Value(BigDecimal.ZERO)
     override fun simplify(): Value = this // do nothing
     override fun toString() = value.toPlainString()!!
+    override fun hashCode() = value.hashCode()
     override fun equals(other: Any?): Boolean {
         if (other is Value) {
             return value.compareTo(other.value) === 0
@@ -17,9 +18,5 @@ class Value(val value: BigDecimal) : Expression(charArrayOf(), value.signum() ==
 
     override fun unaryMinus(): Expression {
         return Value(-value)
-    }
-
-    override fun hashCode(): Int {
-        return value.hashCode()
     }
 }

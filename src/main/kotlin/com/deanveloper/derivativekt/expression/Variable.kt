@@ -14,6 +14,7 @@ class Variable(val variable: Char, negative: Boolean = false) : Expression(charA
     }
     override fun simplify() = this // do nothing
     override fun toString() = "${if (isNegative) "-" else ""}$variable"
+    override fun hashCode() = variable.hashCode()
     override fun equals(other: Any?): Boolean {
         if (other is Variable) {
             if (other.variable === variable && other.isNegative === isNegative) {
@@ -26,9 +27,5 @@ class Variable(val variable: Char, negative: Boolean = false) : Expression(charA
 
     override fun unaryMinus(): Expression {
         return Variable(variable, !isNegative)
-    }
-
-    override fun hashCode(): Int {
-        return variable.hashCode()
     }
 }

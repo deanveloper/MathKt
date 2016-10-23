@@ -23,4 +23,6 @@ fun main(vararg args: String) {
     println(exp.simplify())
     println(exp.derive('x'))
     println(exp.derive('x').simplify())
+
+    println(exp(Value(BigDecimal.valueOf(5))).simplify())
 }

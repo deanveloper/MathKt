@@ -1,8 +1,10 @@
 package com.deanveloper.derivativekt.expression.twopartexpression
 
+import com.deanveloper.derivativekt.defaultScale
 import com.deanveloper.derivativekt.expression.Expression
 import com.deanveloper.derivativekt.expression.Value
 import java.math.BigDecimal
+import java.math.MathContext
 
 class DivisionExpression(
         variables: CharArray,
@@ -46,7 +48,7 @@ class DivisionExpression(
                     }
 
                     if (f.value.mod(g.value).compareTo(BigDecimal.ZERO) === 0) {
-                        return Value(f.value / g.value)
+                        return Value(f.value.divide(g.value, MathContext(defaultScale)))
                     }
                 }
             }

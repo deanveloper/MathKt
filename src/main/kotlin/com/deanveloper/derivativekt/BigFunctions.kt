@@ -1,6 +1,9 @@
 package com.deanveloper.derivativekt
 
-/*Licensed to the Apache Software Foundation (ASF) under one
+/*LICENSE FOR ANY FUNCTION LABELLED WITH
+"Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java"
+
+Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
 regarding copyright ownership.  The ASF licenses this file
@@ -15,8 +18,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.*/
 
-/** Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java */
-
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.MathContext
@@ -24,6 +25,8 @@ import java.math.RoundingMode
 
 /**
  * The number of significant figures to calculate to.
+ *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
  */
 var defaultScale = 50
     set(value) {
@@ -34,6 +37,8 @@ var defaultScale = 50
 /**
  * Compute x^exponent to a given scale.  Uses the same
  * algorithm as class numbercruncher.mathutils.IntPower.
+ *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
  *
  * @receiver the value x
  * @param exponent the exponent value
@@ -72,6 +77,8 @@ fun BigDecimal.intPower(exponent: Long, scale: Int = defaultScale): BigDecimal {
 /**
  * Compute the integral root of x to a given scale, x >= 0.
  * Use Newton's algorithm.
+ *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
  *
  * @receiver the value of x
  * @param index the integral root value
@@ -125,6 +132,8 @@ fun BigDecimal.intRoot(index: Long, scale: Int = defaultScale): BigDecimal {
  * Break x into its whole and fraction parts and
  * compute (e^(1 + fraction/whole))^whole using Taylor's formula.
  *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
+ *
  * @receiver the value of x
  * @param scale the desired scale of the result
  * @return the result value
@@ -174,6 +183,8 @@ fun BigDecimal.exp(scale: Int = defaultScale): BigDecimal {
 /**
  * Compute e^x to a given scale by the Taylor series.
  *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
+ *
  * @receiver the value of x
  * @param scale the desired scale of the result
  * @return the result value
@@ -213,6 +224,8 @@ private fun BigDecimal.expTaylor(scale: Int = defaultScale): BigDecimal {
 
 /**
  * Compute the natural logarithm of x to a given scale, x > 0.
+ *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
  */
 fun BigDecimal.ln(scale: Int = defaultScale): BigDecimal {
     // Check that x > 0.
@@ -241,6 +254,8 @@ fun BigDecimal.ln(scale: Int = defaultScale): BigDecimal {
 /**
  * Compute the natural logarithm of x to a given scale, x > 0.
  * Use Newton's algorithm.
+ *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
  */
 private fun BigDecimal.lnNewton(scale: Int = defaultScale): BigDecimal {
     var x = this
@@ -271,6 +286,8 @@ private fun BigDecimal.lnNewton(scale: Int = defaultScale): BigDecimal {
 /**
  * Compute the arctangent of x to a given scale, |x| < 1
  *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
+ *
  * @receiver the value of x
  * @param scale the desired scale of the result
  * @return the result value
@@ -292,6 +309,8 @@ fun BigDecimal.arctan(scale: Int = defaultScale): BigDecimal {
 /**
  * Compute the arctangent of x to a given scale
  * by the Taylor series, |x| < 1
+ *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
  *
  * @receiver the value of x
  * @param scale the desired scale of the result
@@ -338,6 +357,8 @@ private fun BigDecimal.arctanTaylor(scale: Int = defaultScale): BigDecimal {
  * Compute the square root of x to a given scale, x >= 0.
  * Use Newton's algorithm.
  *
+ * Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java
+ *
  * @receiver the value of x
  * @param scale the desired scale of the result
  * @return the result value
@@ -368,14 +389,17 @@ fun BigDecimal.sqrt(scale: Int = defaultScale): BigDecimal {
     return BigDecimal(ix, scale)
 }
 
+/**
+ * Raises one BigDecimal to a power of another BigDecimal
+ */
 fun BigDecimal.pow(other: BigDecimal, scale: Int = defaultScale): BigDecimal {
-    if(other.signum() === 0 || other.scale() <= 0 || other.stripTrailingZeros().scale() <= 0) {
+    if (other.signum() === 0 || other.scale() <= 0 || other.stripTrailingZeros().scale() <= 0) {
         var toReturn = BigDecimal.ONE
 
         val max = other.toBigIntegerExact()
 
         try {
-            for(iter in 1..max.longValueExact()) {
+            for (iter in 1..max.longValueExact()) {
                 toReturn *= this
             }
         } catch (e: ArithmeticException) { // If the value cannot be stored in a long
@@ -392,4 +416,69 @@ fun BigDecimal.pow(other: BigDecimal, scale: Int = defaultScale): BigDecimal {
 
     val sp1 = scale + 1
     return (this.ln(sp1) * other).exp(sp1).round(MathContext(scale, RoundingMode.HALF_UP))
+}
+
+/**
+ * Computes the sine of a BigDecimal. It checks a few
+ * cached values, then uses the Taylor Series if needed.
+ */
+fun BigDecimal.sin(scale: Int = defaultScale): BigDecimal {
+    return with(this.mod(PI * BigDecimal.valueOf(2))) {
+        when {
+            compareTo(BigDecimal.ZERO) === 0 -> BigDecimal.ZERO
+            compareTo(PI.divide(BigDecimal.valueOf(2))) === 0 -> BigDecimal.ONE
+            compareTo(PI) === 0 -> BigDecimal.ZERO
+            compareTo(PI.times(BigDecimal("1.5"))) === 0 -> -BigDecimal.ONE
+            else -> sinTaylor(scale)
+        }
+    }
+}
+
+/**
+ * Computes the sine of a BigDecimal based on the Sine Taylor Series.
+ */
+private fun BigDecimal.sinTaylor(scale: Int = defaultScale): BigDecimal {
+    if (this !in BigDecimal.ZERO..(PI * BigDecimal.valueOf(2))) {
+        return this.mod(PI * BigDecimal.valueOf(2)).sinTaylor()
+    }
+
+    var last = this
+    var current = this
+    var n = BigDecimal.valueOf(3)
+    var add = false
+    // x - x^3/3! + x^5/5! - x^7/7! ...
+
+    do {
+        last = current
+        if (add) {
+            current += current.pow(n).divide(n.factorial(), scale + 1)
+        } else {
+            current -= current.pow(n).divide(n.factorial(), scale + 1)
+        }
+
+        n += BigDecimal.valueOf(2)
+        add = !add
+    } while (last.compareTo(current) === 0)
+
+    return current
+}
+
+/**
+ * Computes the sine of a BigDecimal. It checks a few
+ * cached values, then uses the Taylor Series if needed.
+ */
+fun BigDecimal.cos(scale: Int = defaultScale): BigDecimal {
+    return (this - (PI / BigDecimal.valueOf(2))).cos(scale)
+}
+
+private fun BigDecimal.factorial(): BigDecimal {
+    var toReturn = BigDecimal.ONE
+    var i = BigInteger.valueOf(2)
+
+    while(i <= this.toBigIntegerExact()) {
+        toReturn *= BigDecimal(i)
+        i += BigInteger.ONE
+    }
+
+    return toReturn
 }

@@ -20,7 +20,7 @@ class LogExpression(
     ) : this(charArrayOf(variable), base, f, isNegative)
 
     override fun execute(args: Map<Char, Expression>): LogExpression {
-        return LogExpression(vars, f.execute(args), g.execute(args))
+        return LogExpression(vars, base.execute(args), f.execute(args))
     }
 
     override fun derive(variable: Char): Expression {
@@ -67,6 +67,8 @@ class LogExpression(
                 if (base is Value) {
                     if (base == f) {
                         return Value(BigDecimal.ONE)
+                    } else if (base == Value(E)) {
+                        return Value(f.value.ln())
                     } else {
                         return Value(f.value.ln() / base.value.ln())
                     }
