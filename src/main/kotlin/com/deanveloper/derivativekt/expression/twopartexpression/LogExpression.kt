@@ -10,14 +10,14 @@ class LogExpression(
         variables: CharArray,
         val base: Expression,
         f: Expression,
-        negative: Boolean = false
-) : Expression.TwoPartExpression(variables, f, base, negative) {
+        isNegative: Boolean = false
+) : Expression.TwoPartExpression(variables, f, base, isNegative) {
     constructor(
             variable: Char,
             base: Expression,
             f: Expression,
-            negative: Boolean = false
-    ) : this(charArrayOf(variable), base, f, negative)
+            isNegative: Boolean = false
+    ) : this(charArrayOf(variable), base, f, isNegative)
 
     override fun execute(args: Map<Char, Expression>): LogExpression {
         return LogExpression(vars, f.execute(args), g.execute(args))

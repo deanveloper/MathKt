@@ -26,13 +26,13 @@ abstract class Expression(val vars: CharArray, val isNegative: Boolean = false) 
             variables: CharArray,
             val f: Expression,
             val g: Expression,
-            negative: Boolean = false
-    ) : Expression(variables, negative)
+            isNegative: Boolean = false
+    ) : Expression(variables, isNegative)
 
     abstract class TrigExpression(
             variables: CharArray,
             val f: Expression,
-            negative: Boolean = false
-    ) : Expression(variables, negative)
+            isNegative: Boolean = false
+    ) : Expression(variables, isNegative)
 }
 

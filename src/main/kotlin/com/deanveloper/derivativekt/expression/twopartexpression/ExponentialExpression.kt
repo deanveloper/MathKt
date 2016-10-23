@@ -10,14 +10,14 @@ class ExponentialExpression(
         variables: CharArray,
         f: Expression,
         g: Expression,
-        negative: Boolean = false
-) : Expression.TwoPartExpression(variables, f, g, negative) {
+        isNegative: Boolean = false
+) : Expression.TwoPartExpression(variables, f, g, isNegative) {
     constructor(
             variable: Char,
             f: Expression,
             g: Expression,
-            negative: Boolean = false
-    ) : this(charArrayOf(variable), f, g, negative)
+            isNegative: Boolean = false
+    ) : this(charArrayOf(variable), f, g, isNegative)
 
     override fun execute(args: Map<Char, Expression>): ExponentialExpression {
         return ExponentialExpression(vars, f.execute(args), g.execute(args))
