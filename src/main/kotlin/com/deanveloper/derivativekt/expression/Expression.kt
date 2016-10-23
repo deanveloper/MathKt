@@ -10,15 +10,13 @@ import java.math.BigDecimal
  */
 abstract class Expression(val vars: CharArray, val isNegative: Boolean = false) {
 
-    operator fun invoke(vararg args: Expression): BigDecimal {
-        require(args.size === vars.size) { "This expression takes ${vars.size} arguments, not ${args.size}" }
-
+    operator fun invoke(vararg args: Expression): Expression {
         return execute(vars.zip(args).toMap())
     }
 
-    internal abstract fun execute(args: Map<Char, Expression>): BigDecimal
+    internal abstract fun execute(args: Map<Char, Expression>): Expression
 
-    abstract fun derive(): Expression
+    abstract fun derive(variable: Char): Expression
 
     abstract class TwoPartExpression(
             variables: CharArray,

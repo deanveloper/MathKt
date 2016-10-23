@@ -8,11 +8,11 @@ class ExponentialExpression(variables: CharArray, f: Expression, g: Expression, 
 
     constructor(variable: Char, f: Expression, g: Expression) : this(charArrayOf(variable), f, g)
 
-    override fun execute(args: Map<Char, Expression>): BigDecimal {
-        return f.execute(args).pow(g.execute(args))
+    override fun execute(args: Map<Char, Expression>): ExponentialExpression {
+        return ExponentialExpression(vars, f.execute(args), g.execute(args))
     }
 
-    override fun derive(): Expression {
+    override fun derive(variable: Char): Expression {
         if (f.vars.isEmpty() && g.vars.isNotEmpty()) { // power function
             // when f(x) = c^x and c is constant, f'(x) = c^x * ln(x) (with chain rule appended)
             return MultiplicationExpression(vars,
@@ -23,7 +23,7 @@ class ExponentialExpression(variables: CharArray, f: Expression, g: Expression, 
                                     f
                             )
                     ),
-                    g.derive()
+                    g.derive(variable)
             )
         } else if (f.vars.isNotEmpty() && g.vars.isEmpty()) { // exponential function
             // when f(x) = x^c and c is constant, f'(x) = c * x^(c-1) (with chain rule appended)
@@ -38,7 +38,7 @@ class ExponentialExpression(variables: CharArray, f: Expression, g: Expression, 
                                     )
                             )
                     ),
-                    f.derive()
+                    f.derive(variable)
             )
         } else if (f.vars.isNotEmpty() && g.vars.isNotEmpty()) { // weird-ass function
             // when h(x) = f(x) ^ g(x), h'(x) = h(x) * (g(x) / f(x) + g'(x) * ln(g(x))
@@ -47,7 +47,7 @@ class ExponentialExpression(variables: CharArray, f: Expression, g: Expression, 
                     AdditionExpression(vars,
                             DivisionExpression(vars, g, f),
                             MultiplicationExpression(vars,
-                                    g.derive(),
+                                    g.derive(variable),
                                     LogExpression(vars, Value(E), f)
                             )
                     )

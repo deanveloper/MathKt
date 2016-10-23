@@ -6,15 +6,15 @@ class MultiplicationExpression(variables: CharArray, f: Expression, g: Expressio
 
     constructor(variable: Char, f: Expression, g: Expression) : this(charArrayOf(variable), f, g)
 
-    override fun execute(args: Map<Char, Expression>): BigDecimal {
-        return f.execute(args) * g.execute(args)
+    override fun execute(args: Map<Char, Expression>): MultiplicationExpression {
+        return MultiplicationExpression(vars, f.execute(args), g.execute(args))
     }
 
-    override fun derive(): Expression {
+    override fun derive(variable: Char): Expression {
         // (f * g)' == f * g' + f' * g
         return AdditionExpression(vars,
-                MultiplicationExpression(vars, f.derive(), g),
-                MultiplicationExpression(vars, f, g.derive())
+                MultiplicationExpression(vars, f.derive(variable), g),
+                MultiplicationExpression(vars, f, g.derive(variable))
         )
     }
 

@@ -5,12 +5,12 @@ import java.math.BigDecimal
 class SubtractionExpression(variables: CharArray, f: Expression, g: Expression, negative: Boolean = false) : Expression.TwoPartExpression(variables, f, g, negative) {
     constructor(variable: Char, f: Expression, g: Expression) : this(charArrayOf(variable), f, g)
 
-    override fun execute(args: Map<Char, Expression>): BigDecimal {
-        return f.execute(args) - g.execute(args)
+    override fun execute(args: Map<Char, Expression>): SubtractionExpression {
+        return SubtractionExpression(vars, f.execute(args), g.execute(args))
     }
 
-    override fun derive(): Expression {
-        return SubtractionExpression(vars, f.derive(), g.derive())
+    override fun derive(variable: Char): Expression {
+        return SubtractionExpression(vars, f.derive(variable), g.derive(variable))
     }
 
     override fun simplify(): Expression {

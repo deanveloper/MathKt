@@ -3,8 +3,8 @@ package com.deanveloper.derivativekt.expression
 import java.math.BigDecimal
 
 class Value(val value: BigDecimal) : Expression(charArrayOf(), value.signum() === -1) {
-    override fun execute(args: Map<Char, Expression>) = value
-    override fun derive() = Value(BigDecimal.ZERO)
+    override fun execute(args: Map<Char, Expression>) = this
+    override fun derive(variable: Char) = Value(BigDecimal.ZERO)
     override fun simplify(): Value = this // do nothing
     override fun toString() = value.toPlainString()!!
     override fun equals(other: Any?): Boolean {

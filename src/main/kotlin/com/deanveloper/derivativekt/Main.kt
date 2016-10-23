@@ -17,6 +17,6 @@ fun main(vararg args: String) {
 
     println(exp)
     println(exp.simplify())
-    println(exp.derive())
-    println(exp.derive().simplify())
+    println(exp.derive('x'))
+    println(exp.derive('x').simplify())
 }

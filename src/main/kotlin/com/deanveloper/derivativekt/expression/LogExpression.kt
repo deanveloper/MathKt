@@ -8,19 +8,20 @@ class LogExpression(variables: CharArray, val base: Expression, f: Expression, n
 
     constructor(variable: Char, f: Expression, g: Expression) : this(charArrayOf(variable), f, g)
 
-    override fun execute(args: Map<Char, Expression>): BigDecimal {
-        return f.execute(args).ln() / base.execute(args).ln()
+    override fun execute(args: Map<Char, Expression>): LogExpression {
+        return LogExpression(vars, f.execute(args), g.execute(args))
     }
 
-    override fun derive(): Expression {
+    override fun derive(variable: Char): Expression {
         if (base is Value) {
             if (base.value == E) {
                 // when f(x) = ln(x), f'(x) is 1/x
                 return MultiplicationExpression(vars,
                         DivisionExpression(vars,
                                 Value(BigDecimal.ONE),
-                                f),
-                        f.derive()
+                                f
+                        ),
+                        f.derive(variable)
                 )
             } else {
                 // when f(x) = logBASE(c, x) and c is constant, f'(x) = (1/x) / ln(c)
@@ -29,7 +30,7 @@ class LogExpression(variables: CharArray, val base: Expression, f: Expression, n
                                 DivisionExpression(vars, Value(BigDecimal.ONE), f),
                                 LogExpression(vars, Value(E), base)
                         ),
-                        f.derive()
+                        f.derive(variable)
                 )
             }
         } else {

@@ -5,16 +5,16 @@ import java.math.BigDecimal
 class DivisionExpression(variables: CharArray, f: Expression, g: Expression, negative: Boolean = false) : Expression.TwoPartExpression(variables, f, g, negative) {
     constructor(variable: Char, f: Expression, g: Expression) : this(charArrayOf(variable), f, g)
 
-    override fun execute(args: Map<Char, Expression>): BigDecimal {
-        return f.execute(args) / g.execute(args)
+    override fun execute(args: Map<Char, Expression>): DivisionExpression {
+        return DivisionExpression(vars, f.execute(args), g.execute(args))
     }
 
-    override fun derive(): Expression {
+    override fun derive(variable: Char): Expression {
         // (h / l)' == (l * h' - h - l') / (l*l)
         return DivisionExpression(vars,
                 SubtractionExpression(vars,
-                        MultiplicationExpression(vars, g, f.derive()),
-                        MultiplicationExpression(vars, f, g.derive())
+                        MultiplicationExpression(vars, g, f.derive(variable)),
+                        MultiplicationExpression(vars, f, g.derive(variable))
                 ),
                 ExponentialExpression(g.vars, g, Value(BigDecimal.valueOf(2)))
         )
