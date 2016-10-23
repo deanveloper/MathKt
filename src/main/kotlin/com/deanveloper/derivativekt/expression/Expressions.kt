@@ -227,7 +227,6 @@ class SubtractionExpression(variables: CharArray, f: Expression, g: Expression, 
                 return AdditionExpression(vars, f, -g).simplify()
             }
             if (f is Value && g is Value) {
-                println("$f, $g")
                 return Value(f.value - g.value)
             }
             if (f is Value) {
