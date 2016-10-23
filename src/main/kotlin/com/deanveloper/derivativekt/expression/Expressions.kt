@@ -79,8 +79,9 @@ class MultiplicationExpression(variables: CharArray, f: Expression, g: Expressio
             }
 
             //TODO: x^c * x^d == x^(c+d)
+
+            return this
         }
-        return this
     }
 
     override operator fun unaryMinus(): Expression {
@@ -197,9 +198,8 @@ class AdditionExpression(variables: CharArray, f: Expression, g: Expression, neg
             }
 
             //TODO: cx + dx = (c+d)x (only perform if c+d makes a nice number)
+            return this
         }
-
-        return this
     }
 
     override fun unaryMinus(): Expression {
@@ -227,6 +227,7 @@ class SubtractionExpression(variables: CharArray, f: Expression, g: Expression, 
                 return AdditionExpression(vars, f, -g).simplify()
             }
             if (f is Value && g is Value) {
+                println("$f, $g")
                 return Value(f.value - g.value)
             }
             if (f is Value) {
@@ -265,19 +266,31 @@ class ExponentialExpression(variables: CharArray, f: Expression, g: Expression, 
 
     override fun derive(): Expression {
         if (f.vars.isEmpty() && g.vars.isNotEmpty()) { // power function
-            // when f(x) = c^x and c is constant, f'(x) = c^x * ln(x)
-            return MultiplicationExpression(vars, this, LogExpression(vars, Value(E), f))
-        } else if (f.vars.isNotEmpty() && g.vars.isEmpty()) { // exponential function
-            // when f(x) = x^c and c is constant, f'(x) = c * x^(c-1)
+            // when f(x) = c^x and c is constant, f'(x) = c^x * ln(x) (with chain rule appended)
             return MultiplicationExpression(vars,
-                    g,
-                    ExponentialExpression(vars,
-                            f,
-                            SubtractionExpression(vars,
-                                    g,
-                                    Value(BigDecimal.ONE)
+                    MultiplicationExpression(vars,
+                            this,
+                            LogExpression(vars,
+                                    Value(E),
+                                    f
                             )
-                    )
+                    ),
+                    g.derive()
+            )
+        } else if (f.vars.isNotEmpty() && g.vars.isEmpty()) { // exponential function
+            // when f(x) = x^c and c is constant, f'(x) = c * x^(c-1) (with chain rule appended)
+            return MultiplicationExpression(vars,
+                    MultiplicationExpression(vars,
+                            g,
+                            ExponentialExpression(vars,
+                                    f,
+                                    SubtractionExpression(vars,
+                                            g,
+                                            Value(BigDecimal.ONE)
+                                    )
+                            )
+                    ),
+                    f.derive()
             )
         } else if (f.vars.isNotEmpty() && g.vars.isNotEmpty()) { // weird-ass function
             // when h(x) = f(x) ^ g(x), h'(x) = h(x) * (g(x) / f(x) + g'(x) * ln(g(x))
@@ -291,6 +304,7 @@ class ExponentialExpression(variables: CharArray, f: Expression, g: Expression, 
                             )
                     )
             )
+
         } else {
             // when f(x) = c ^ d, where c and d are constants, f'(x) = 0
             return Value(BigDecimal.ZERO)
@@ -330,12 +344,20 @@ class LogExpression(variables: CharArray, val base: Expression, f: Expression, n
         if (base is Value) {
             if (base.value == E) {
                 // when f(x) = ln(x), f'(x) is 1/x
-                return DivisionExpression(vars, Value(BigDecimal.ONE), f)
+                return MultiplicationExpression(vars,
+                        DivisionExpression(vars,
+                                Value(BigDecimal.ONE),
+                                f),
+                        f.derive()
+                )
             } else {
                 // when f(x) = logBASE(c, x) and c is constant, f'(x) = (1/x) / ln(c)
-                return DivisionExpression(vars,
-                        DivisionExpression(vars, Value(BigDecimal.ONE), f),
-                        LogExpression(vars, Value(E), base)
+                return MultiplicationExpression(vars,
+                        DivisionExpression(vars,
+                                DivisionExpression(vars, Value(BigDecimal.ONE), f),
+                                LogExpression(vars, Value(E), base)
+                        ),
+                        f.derive()
                 )
             }
         } else {
@@ -343,7 +365,7 @@ class LogExpression(variables: CharArray, val base: Expression, f: Expression, n
             return DivisionExpression(vars,
                     LogExpression(vars, Value(E), f),
                     LogExpression(vars, Value(E), base)
-            ).derive()
+            )
         }
     }
 

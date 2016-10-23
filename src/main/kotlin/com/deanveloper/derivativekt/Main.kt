@@ -1,18 +1,18 @@
 package com.deanveloper.derivativekt
 
-import com.deanveloper.derivativekt.expression.AdditionExpression
-import com.deanveloper.derivativekt.expression.MultiplicationExpression
-import com.deanveloper.derivativekt.expression.Value
-import com.deanveloper.derivativekt.expression.Variable
+import com.deanveloper.derivativekt.expression.*
 import java.math.BigDecimal
 
 /**
  * @author Dean
  */
 fun main(vararg args: String) {
-    val exp = AdditionExpression('x',
-            MultiplicationExpression('x', Value(BigDecimal.ONE), Variable('x')),
-            MultiplicationExpression('x', Value(BigDecimal.ZERO), Variable('x'))
+    val exp = LogExpression('x',
+            Value(E),
+            AdditionExpression('x',
+                    ExponentialExpression('x', Variable('x'), Value(BigDecimal.valueOf(3))),
+                    MultiplicationExpression('x', Value(BigDecimal.ZERO), Variable('x'))
+            )
     )
 
     println(exp)
