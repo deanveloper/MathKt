@@ -464,13 +464,57 @@ private fun BigDecimal.sinTaylor(scale: Int = defaultScale): BigDecimal {
 }
 
 /**
- * Computes the sine of a BigDecimal. It checks a few
- * cached values, then uses the Taylor Series if needed.
+ * Computes the cosine of a BigDecimal by calculating sine of this + pi/2.
+ * The [sin] checks a few cached values, then uses the Taylor Series if needed.
  */
 fun BigDecimal.cos(scale: Int = defaultScale): BigDecimal {
-    return (this - (PI / BigDecimal.valueOf(2))).cos(scale)
+    return (this + (PI / BigDecimal.valueOf(2))).cos(scale)
 }
 
+/**
+ * Calculates the inverse sine function of a BigDecimal.
+ * Checks a few cached values, then uses an iterative method if needed.
+ */
+fun BigDecimal.asin(scale: Int = defaultScale): BigDecimal {
+    return with(this.mod(PI * BigDecimal.valueOf(2))) {
+        when {
+            compareTo(BigDecimal.ZERO) === 0 -> BigDecimal.ZERO
+            compareTo(BigDecimal.ONE) === 0 -> PI.divide(BigDecimal.valueOf(2))
+            compareTo(BigDecimal.ZERO) === 0 -> PI
+            compareTo(-BigDecimal.ONE) === 0 -> PI.times(BigDecimal("1.5"))
+            else -> asinIterate(scale)
+        }
+    }
+}
+
+private fun BigDecimal.asinIterate(scale: Int = defaultScale): BigDecimal {
+    // 2^n * sin(x/2^n) as n->Infinity
+    var value: BigDecimal
+    do {
+        val n = BigDecimal("1000000")
+        val power = BigDecimal.valueOf(2).pow(n)
+        val np1 = n + BigDecimal.ONE
+        val powerp1 = BigDecimal.valueOf(2).pow(np1)
+        value = power.times(this.divide(power, scale))
+
+    } while (value.compareTo(powerp1.times(this.divide(powerp1, scale))) === 0)
+
+    return value
+}
+
+/**
+ * Calculates the inverse cosine function of a BigDecimal using the asin(-this) + 1
+ * [asin] checks a few cached values, then uses an iterative method if needed.
+ */
+fun BigDecimal.acos(scale: Int = defaultScale): BigDecimal {
+    return (-this).asin(scale) + BigDecimal.ONE
+}
+
+/**
+ * Computes the factorial of a BigDecimal.
+ *
+ * @throws ArithmeticException if the BigDecimal is not an integer
+ */
 private fun BigDecimal.factorial(): BigDecimal {
     var toReturn = BigDecimal.ONE
     var i = BigInteger.valueOf(2)
