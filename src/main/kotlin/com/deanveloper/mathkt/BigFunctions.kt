@@ -487,19 +487,21 @@ fun BigDecimal.asin(scale: Int = defaultScale): BigDecimal {
     }
 }
 
+/**
+ * An iterative method to calculate the arcsine of a BigDecimal.
+ */
 private fun BigDecimal.asinIterate(scale: Int = defaultScale): BigDecimal {
     // 2^n * sin(x/2^n) as n->Infinity
-    var value: BigDecimal
+    var toReturn: BigDecimal
     do {
         val n = BigDecimal("1000000")
         val power = BigDecimal.valueOf(2).pow(n)
         val np1 = n + BigDecimal.ONE
         val powerp1 = BigDecimal.valueOf(2).pow(np1)
-        value = power.times(this.divide(power, scale))
+        toReturn = power.times(this.divide(power, scale))
+    } while (toReturn.compareTo(powerp1.times(this.divide(powerp1, scale))) === 0)
 
-    } while (value.compareTo(powerp1.times(this.divide(powerp1, scale))) === 0)
-
-    return value
+    return toReturn
 }
 
 /**

@@ -1,6 +1,8 @@
 package com.deanveloper.mathkt
 
-import com.deanveloper.mathkt.expression.*
+import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.Variable
+import com.deanveloper.mathkt.expression.trigexpression.SineExpression
 import com.deanveloper.mathkt.expression.twopartexpression.AdditionExpression
 import com.deanveloper.mathkt.expression.twopartexpression.ExponentialExpression
 import com.deanveloper.mathkt.expression.twopartexpression.LogExpression
@@ -11,11 +13,13 @@ import java.math.BigDecimal
  * @author Dean
  */
 fun main(vararg args: String) {
-    val exp = LogExpression('x',
-            Value(E),
-            AdditionExpression('x',
-                    ExponentialExpression('x', Variable('x'), Value(BigDecimal.valueOf(3))),
-                    MultiplicationExpression('x', Value(BigDecimal.ZERO), Variable('x'))
+    val exp = SineExpression('x',
+            LogExpression('x',
+                    Value(E),
+                    AdditionExpression('x',
+                            ExponentialExpression('x', Variable('x'), Value(BigDecimal.valueOf(3))),
+                            MultiplicationExpression('x', Value(BigDecimal.ZERO), Variable('x'))
+                    )
             )
     )
 
