@@ -1,16 +1,16 @@
-package com.deanveloper.derivativekt.expression.trigexpression
+package com.deanveloper.mathkt.expression.trigexpression
 
-import com.deanveloper.derivativekt.defaultScale
-import com.deanveloper.derivativekt.expression.Expression
-import com.deanveloper.derivativekt.expression.Value
-import com.deanveloper.derivativekt.expression.twopartexpression.MultiplicationExpression
-import com.deanveloper.derivativekt.sin
+import com.deanveloper.mathkt.cos
+import com.deanveloper.mathkt.defaultScale
+import com.deanveloper.mathkt.expression.Expression
+import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import java.math.BigDecimal
 
 /**
  * @author Dean
  */
-class CosecantExpression(
+class SecantExpression(
         variables: CharArray,
         f: Expression,
         isNegative: Boolean = false
@@ -20,29 +20,29 @@ class CosecantExpression(
                 isNegative: Boolean = false
     ) : this(charArrayOf(variable), f, isNegative)
 
-    override fun execute(args: Map<Char, Expression>): CosecantExpression {
-        return CosecantExpression(vars, f.execute(args), isNegative)
+    override fun execute(args: Map<Char, Expression>): SecantExpression {
+        return SecantExpression(vars, f.execute(args), isNegative)
     }
 
     override fun derive(variable: Char): Expression {
         return MultiplicationExpression(vars,
                 MultiplicationExpression(vars,
-                        -this,
-                        CotangentExpression(vars, f, false)
+                        this,
+                        TangentExpression(vars, f, false)
                 ),
                 f.derive(variable)
         )
     }
 
     override fun simplify(): Expression {
-        val simp = CosecantExpression(vars, f.simplify(), isNegative)
+        val simp = SecantExpression(vars, f.simplify(), isNegative)
         with(simp) {
             if (f.isNegative) {
-                return CosecantExpression(vars, -f, !isNegative).simplify()
+                return SecantExpression(vars, -f, isNegative).simplify()
             }
 
             if (f is Value) {
-                return Value(BigDecimal.ONE.divide(f.value.sin(), defaultScale)).simplify()
+                return Value(BigDecimal.ONE.divide(f.value.cos(), defaultScale)).simplify()
             }
 
             return this
@@ -54,6 +54,6 @@ class CosecantExpression(
     }
 
     override fun toString(): String {
-        return "csc($f)"
+        return "sec($f)"
     }
 }

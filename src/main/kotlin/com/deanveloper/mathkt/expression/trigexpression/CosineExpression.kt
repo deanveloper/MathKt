@@ -1,9 +1,9 @@
-package com.deanveloper.derivativekt.expression.trigexpression
+package com.deanveloper.mathkt.expression.trigexpression
 
-import com.deanveloper.derivativekt.cos
-import com.deanveloper.derivativekt.expression.Expression
-import com.deanveloper.derivativekt.expression.Value
-import com.deanveloper.derivativekt.expression.twopartexpression.MultiplicationExpression
+import com.deanveloper.mathkt.cos
+import com.deanveloper.mathkt.expression.Expression
+import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 
 /**
  * @author Dean

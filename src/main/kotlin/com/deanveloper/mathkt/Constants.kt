@@ -1,4 +1,4 @@
-package com.deanveloper.derivativekt
+package com.deanveloper.mathkt
 
 import java.math.BigDecimal
 

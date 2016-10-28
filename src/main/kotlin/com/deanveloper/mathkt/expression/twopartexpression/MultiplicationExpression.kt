@@ -1,7 +1,7 @@
-package com.deanveloper.derivativekt.expression.twopartexpression
+package com.deanveloper.mathkt.expression.twopartexpression
 
-import com.deanveloper.derivativekt.expression.Expression
-import com.deanveloper.derivativekt.expression.Value
+import com.deanveloper.mathkt.expression.Expression
+import com.deanveloper.mathkt.expression.Value
 import java.math.BigDecimal
 
 class MultiplicationExpression(

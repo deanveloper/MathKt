@@ -1,10 +1,10 @@
-package com.deanveloper.derivativekt
+package com.deanveloper.mathkt
 
-import com.deanveloper.derivativekt.expression.*
-import com.deanveloper.derivativekt.expression.twopartexpression.AdditionExpression
-import com.deanveloper.derivativekt.expression.twopartexpression.ExponentialExpression
-import com.deanveloper.derivativekt.expression.twopartexpression.LogExpression
-import com.deanveloper.derivativekt.expression.twopartexpression.MultiplicationExpression
+import com.deanveloper.mathkt.expression.*
+import com.deanveloper.mathkt.expression.twopartexpression.AdditionExpression
+import com.deanveloper.mathkt.expression.twopartexpression.ExponentialExpression
+import com.deanveloper.mathkt.expression.twopartexpression.LogExpression
+import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import java.math.BigDecimal
 
 /**

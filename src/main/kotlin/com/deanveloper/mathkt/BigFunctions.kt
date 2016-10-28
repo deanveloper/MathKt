@@ -1,4 +1,4 @@
-package com.deanveloper.derivativekt
+package com.deanveloper.mathkt
 
 /*LICENSE FOR ANY FUNCTION LABELLED WITH
 "Taken from https://github.com/tareknaj/BigFunctions/blob/master/BigFunctions.java"

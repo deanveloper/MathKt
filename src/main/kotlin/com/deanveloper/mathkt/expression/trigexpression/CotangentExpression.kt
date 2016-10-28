@@ -1,10 +1,10 @@
-package com.deanveloper.derivativekt.expression.trigexpression
+package com.deanveloper.mathkt.expression.trigexpression
 
-import com.deanveloper.derivativekt.defaultScale
-import com.deanveloper.derivativekt.expression.Expression
-import com.deanveloper.derivativekt.expression.Value
-import com.deanveloper.derivativekt.expression.twopartexpression.MultiplicationExpression
-import com.deanveloper.derivativekt.sin
+import com.deanveloper.mathkt.defaultScale
+import com.deanveloper.mathkt.expression.Expression
+import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
+import com.deanveloper.mathkt.sin
 import java.math.BigDecimal
 
 /**
