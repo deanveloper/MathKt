@@ -17,7 +17,12 @@ class IrrationalValue(
         return approx.setScale(0, RoundingMode.FLOOR).toBigIntegerExact().toValue
     }
 
-    override fun simplify() = this
+    override fun simplify(): IrrationalValue {
+        if (times.isNegative) {
+            IrrationalValue(value, approx, plus.simplify(), -times.simplify(), !isNegative)
+        }
+        return IrrationalValue(value, approx, plus.simplify(), times.simplify(), isNegative)
+    }
 
     override operator fun unaryMinus() = IrrationalValue(value, -approx, -plus, times, !isNegative)
 
@@ -27,7 +32,7 @@ class IrrationalValue(
 
     override fun equals(other: Any?): Boolean {
         if (other is IrrationalValue) {
-            return value == other.value && isNegative == other.isNegative
+            return value == other.value && plus == other.plus && times == other.times && isNegative == other.isNegative
         }
 
         return false
