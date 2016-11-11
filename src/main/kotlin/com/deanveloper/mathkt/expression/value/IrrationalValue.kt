@@ -33,11 +33,11 @@ class IrrationalValue(
         return false
     }
 
-    override fun plus(o: RealValue) = IrrationalValue(value, approx, plus + o, times, isNegative)
+    override fun onPlus(o: RealValue) = IrrationalValue(value, approx, plus.onPlus(o), times, isNegative)
 
-    override fun onMinus(o: RealValue) = IrrationalValue(value, approx, plus - o, times, isNegative)
+    override fun onMinus(o: RealValue) = IrrationalValue(value, approx, plus.onMinus(o), times, isNegative)
 
-    override fun onTimes(o: RealValue) = IrrationalValue(value, approx, plus, times * o, isNegative)
+    override fun onTimes(o: RealValue) = IrrationalValue(value, approx, plus, times.onTimes(o), isNegative)
 
-    override fun onDiv(o: RealValue) = IrrationalValue(value, approx, plus, times / o, isNegative)
+    override fun onDiv(o: RealValue) = IrrationalValue(value, approx, plus, times.onDiv(o), isNegative)
 }

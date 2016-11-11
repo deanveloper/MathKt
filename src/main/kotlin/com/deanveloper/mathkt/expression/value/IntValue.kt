@@ -33,7 +33,7 @@ class IntValue private constructor(val value: BigInteger) : RationalValue(value.
     /**
      * Optimized for IntValue
      */
-    override operator fun plus(o: RealValue): RealValue {
+    override fun onPlus(o: RealValue): RealValue {
         return when (o) {
             is IntValue -> IntValue[value + o.value]
             is RationalValue ->
@@ -68,17 +68,17 @@ class IntValue private constructor(val value: BigInteger) : RationalValue(value.
     override fun onDiv(o: RealValue): RealValue {
         return when (o) {
             is IntValue -> RationalValue(this, o)
-            is RationalValue -> this * o.inverse()
+            is RationalValue -> this.onTimes(o.inverse())
             else -> throw UnsupportedOperationException("Divide operation for IntValue is not implemented yet " +
                     "for ${o.javaClass.simpleName}")
         }
     }
 
+    override operator fun unaryMinus() = IntValue(-value)
+
     override fun floor() = this
 
     override fun simplify() = this // do nothing, integers are fully simplified
-
-    override operator fun unaryMinus() = IntValue(-value)
 
     override fun toString() = value.toString()
 

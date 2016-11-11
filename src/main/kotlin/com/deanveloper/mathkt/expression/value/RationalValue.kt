@@ -9,9 +9,9 @@ open class RationalValue(val top: IntValue, val bottom: IntValue) : RealValue(to
 
     private val hash = ((top.hashCode() and 0x0000FFFF) shl 32) or (bottom.hashCode() and 0x0000FFFF)
 
-    override operator fun plus(o: RealValue): RealValue {
+    override fun onPlus(o: RealValue): RealValue {
         return when (o) {
-            is IntValue -> o + this // let IntValue's plus operation handle it
+            is IntValue -> o.onPlus(this) // let IntValue's plus operation handle it
             is RationalValue ->
                 RationalValue(
                         (top.value * o.bottom.value + o.top.value * bottom.value).toValue,
@@ -22,11 +22,11 @@ open class RationalValue(val top: IntValue, val bottom: IntValue) : RealValue(to
         }
     }
 
-    override fun onMinus(o: RealValue) = plus(-o)
+    override fun onMinus(o: RealValue) = onPlus(-o)
 
     override fun onTimes(o: RealValue): RealValue {
         return when (o) {
-            is IntValue -> o * this // let IntValue's times operation handle it
+            is IntValue -> o.onTimes(this) // let IntValue's times operation handle it
             is RationalValue ->
                 RationalValue(
                         (this.top * o.top) as IntValue,
@@ -39,7 +39,7 @@ open class RationalValue(val top: IntValue, val bottom: IntValue) : RealValue(to
 
     override fun onDiv(o: RealValue): RealValue {
         return when (o) {
-            is RationalValue -> this * o.inverse() // Also works for IntValue
+            is RationalValue -> this.onTimes(o.inverse()) // Also works for IntValue
             else -> throw UnsupportedOperationException("Times operation for IntValue is not implemented yet " +
                     "for ${o.javaClass.simpleName}")
         }
