@@ -1,17 +1,18 @@
 package com.deanveloper.mathkt.expression
 
-import java.math.BigDecimal
+import com.deanveloper.mathkt.expression.value.IntValue
 
 class Variable(val variable: Char, negative: Boolean = false) : Expression(charArrayOf(variable), negative) {
     override fun execute(args: Map<Char, Expression>) = args[variable]?.execute(args) ?: this
     override fun derive(variable: Char): Expression {
-        if(variable === this.variable) {
-            return Value(BigDecimal.ONE)
+        if (variable === this.variable) {
+            return IntValue[1]
         } else {
             throw IllegalArgumentException("Cannot take derivative of $this with respect to $variable, " +
                     "define $this")
         }
     }
+
     override fun simplify() = this // do nothing
     override fun toString() = "${if (isNegative) "-" else ""}$variable"
     override fun hashCode() = variable.hashCode()

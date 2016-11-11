@@ -2,7 +2,7 @@ package com.deanveloper.mathkt.expression.trigexpression
 
 import com.deanveloper.mathkt.defaultScale
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import com.deanveloper.mathkt.sin
 import java.math.BigDecimal
@@ -41,8 +41,8 @@ class CosecantExpression(
                 return CosecantExpression(vars, -f, !isNegative).simplify()
             }
 
-            if (f is Value) {
-                return Value(BigDecimal.ONE.divide(f.value.sin(), defaultScale)).simplify()
+            if (f is RealValue) {
+                return RealValue(BigDecimal.ONE.divide(f.value.sin(), defaultScale)).simplify()
             }
 
             return this

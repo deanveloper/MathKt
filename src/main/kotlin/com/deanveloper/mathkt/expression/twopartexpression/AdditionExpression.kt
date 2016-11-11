@@ -1,7 +1,8 @@
 package com.deanveloper.mathkt.expression.twopartexpression
 
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.RealValue
 import java.math.BigDecimal
 
 class AdditionExpression(
@@ -28,24 +29,24 @@ class AdditionExpression(
     override fun simplify(): Expression {
         val simp = AdditionExpression(vars, f.simplify(), g.simplify())
         with(simp) {
-            if (f is Value && g is Value) {
-                return Value(f.value + g.value)
+            if (f is RealValue && g is RealValue) {
+                return f + g
             }
 
-            if (f is Value) {
+            if (f is RealValue) {
                 if (f.isNegative) {
                     return SubtractionExpression(vars, g, f)
                 }
-                if (f.value.signum() === 0) {
+                if (f == IntValue[0]) {
                     return g
                 }
             }
 
-            if (g is Value) {
+            if (g is RealValue) {
                 if (g.isNegative) {
                     return SubtractionExpression(vars, f, g)
                 }
-                if (g.value.signum() === 0) {
+                if (g == IntValue[0]) {
                     return f
                 }
             }

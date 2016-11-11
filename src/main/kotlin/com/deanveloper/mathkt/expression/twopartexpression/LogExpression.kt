@@ -2,7 +2,7 @@ package com.deanveloper.mathkt.expression.twopartexpression
 
 import com.deanveloper.mathkt.E
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.ln
 import java.math.BigDecimal
 
@@ -24,12 +24,12 @@ class LogExpression(
     }
 
     override fun derive(variable: Char): Expression {
-        if (base is Value) {
+        if (base is RealValue) {
             if (base.value == E) {
                 // when f(x) = ln(x), f'(x) is 1/x
                 return MultiplicationExpression(vars,
                         DivisionExpression(vars,
-                                Value(BigDecimal.ONE),
+                                RealValue(BigDecimal.ONE),
                                 f
                         ),
                         f.derive(variable)
@@ -38,8 +38,8 @@ class LogExpression(
                 // when f(x) = logBASE(c, x) and c is constant, f'(x) = (1/x) / ln(c)
                 return MultiplicationExpression(vars,
                         DivisionExpression(vars,
-                                DivisionExpression(vars, Value(BigDecimal.ONE), f),
-                                LogExpression(vars, Value(E), base)
+                                DivisionExpression(vars, RealValue(BigDecimal.ONE), f),
+                                LogExpression(vars, RealValue(E), base)
                         ),
                         f.derive(variable)
                 )
@@ -47,8 +47,8 @@ class LogExpression(
         } else {
             // when h(x) = logBASE(b(x), f(x)), h(x) = ln(f(x)) / ln(b(x)) and use quotient rule to get h'(x)
             return DivisionExpression(vars,
-                    LogExpression(vars, Value(E), f),
-                    LogExpression(vars, Value(E), base)
+                    LogExpression(vars, RealValue(E), f),
+                    LogExpression(vars, RealValue(E), base)
             )
         }
     }
@@ -59,18 +59,18 @@ class LogExpression(
             if (f is ExponentialExpression) {
                 return MultiplicationExpression(vars, f.g, LogExpression(vars, base, f.f)).simplify()
             }
-            if (f is Value) {
+            if (f is RealValue) {
                 if (f.value.compareTo(BigDecimal.ONE) === 0) {
-                    return Value(BigDecimal.ZERO)
+                    return RealValue(BigDecimal.ZERO)
                 }
 
-                if (base is Value) {
+                if (base is RealValue) {
                     if (base == f) {
-                        return Value(BigDecimal.ONE)
-                    } else if (base == Value(E)) {
-                        return Value(f.value.ln())
+                        return RealValue(BigDecimal.ONE)
+                    } else if (base == RealValue(E)) {
+                        return RealValue(f.value.ln())
                     } else {
-                        return Value(f.value.ln() / base.value.ln())
+                        return RealValue(f.value.ln() / base.value.ln())
                     }
                 }
             }
@@ -84,7 +84,7 @@ class LogExpression(
     }
 
     override fun toString(): String {
-        if (base is Value && Math.abs(base.value.compareTo(E)) === 0) {
+        if (base is RealValue && Math.abs(base.value.compareTo(E)) === 0) {
             return "${if (isNegative) "-" else ""}ln($f)"
         } else {
             return "${if (isNegative) "-" else ""}logBASE($base,$f)"

@@ -493,11 +493,12 @@ fun BigDecimal.asin(scale: Int = defaultScale): BigDecimal {
 private fun BigDecimal.asinIterate(scale: Int = defaultScale): BigDecimal {
     // 2^n * sin(x/2^n) as n->Infinity
     var toReturn: BigDecimal
+    var n = BigDecimal("1000000")
     do {
-        val n = BigDecimal("1000000")
         val power = BigDecimal.valueOf(2).pow(n)
         val np1 = n + BigDecimal.ONE
         val powerp1 = BigDecimal.valueOf(2).pow(np1)
+        n *= BigDecimal.TEN
         toReturn = power.times(this.divide(power, scale))
     } while (toReturn.compareTo(powerp1.times(this.divide(powerp1, scale))) === 0)
 

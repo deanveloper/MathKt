@@ -3,7 +3,7 @@ package com.deanveloper.mathkt.expression.trigexpression
 import com.deanveloper.mathkt.cos
 import com.deanveloper.mathkt.defaultScale
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import java.math.BigDecimal
 
@@ -41,8 +41,8 @@ class SecantExpression(
                 return SecantExpression(vars, -f, isNegative).simplify()
             }
 
-            if (f is Value) {
-                return Value(BigDecimal.ONE.divide(f.value.cos(), defaultScale)).simplify()
+            if (f is RealValue) {
+                return RealValue(BigDecimal.ONE.divide(f.value.cos(), defaultScale)).simplify()
             }
 
             return this

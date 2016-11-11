@@ -1,6 +1,6 @@
 package com.deanveloper.mathkt
 
-import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.Variable
 import com.deanveloper.mathkt.expression.trigexpression.SineExpression
 import com.deanveloper.mathkt.expression.twopartexpression.AdditionExpression
@@ -15,10 +15,10 @@ import java.math.BigDecimal
 fun main(vararg args: String) {
     val exp = SineExpression('x',
             LogExpression('x',
-                    Value(E),
+                    RealValue(E),
                     AdditionExpression('x',
-                            ExponentialExpression('x', Variable('x'), Value(BigDecimal.valueOf(3))),
-                            MultiplicationExpression('x', Value(BigDecimal.ZERO), Variable('x'))
+                            ExponentialExpression('x', Variable('x'), RealValue(BigDecimal.valueOf(3))),
+                            MultiplicationExpression('x', RealValue(BigDecimal.ZERO), Variable('x'))
                     )
             )
     )
@@ -28,5 +28,5 @@ fun main(vararg args: String) {
     println(exp.derive('x'))
     println(exp.derive('x').simplify())
 
-    println(exp(Value(BigDecimal.valueOf(5))).simplify())
+    println(exp(RealValue(BigDecimal.valueOf(5))).simplify())
 }

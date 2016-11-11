@@ -2,7 +2,7 @@ package com.deanveloper.mathkt.expression.twopartexpression
 
 import com.deanveloper.mathkt.E
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.pow
 import java.math.BigDecimal
 
@@ -30,7 +30,7 @@ class ExponentialExpression(
                     MultiplicationExpression(vars,
                             this,
                             LogExpression(vars,
-                                    Value(E),
+                                    RealValue(E),
                                     f
                             )
                     ),
@@ -45,7 +45,7 @@ class ExponentialExpression(
                                     f,
                                     SubtractionExpression(vars,
                                             g,
-                                            Value(BigDecimal.ONE)
+                                            RealValue(BigDecimal.ONE)
                                     )
                             )
                     ),
@@ -59,22 +59,22 @@ class ExponentialExpression(
                             DivisionExpression(vars, g, f),
                             MultiplicationExpression(vars,
                                     g.derive(variable),
-                                    LogExpression(vars, Value(E), f)
+                                    LogExpression(vars, RealValue(E), f)
                             )
                     )
             )
 
         } else {
             // when f(x) = c ^ d, where c and d are constants, f'(x) = 0
-            return Value(BigDecimal.ZERO)
+            return RealValue(BigDecimal.ZERO)
         }
     }
 
     override fun simplify(): Expression {
         val simp = ExponentialExpression(vars, f.simplify(), g.simplify())
         with(simp) {
-            if (f is Value && g is Value) {
-                return Value(f.value.pow(g.value))
+            if (f is RealValue && g is RealValue) {
+                return RealValue(f.value.pow(g.value))
             }
             if (f is ExponentialExpression) {
                 return ExponentialExpression(vars, f.f, MultiplicationExpression(vars, f.g, g)).simplify()

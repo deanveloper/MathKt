@@ -1,7 +1,8 @@
 package com.deanveloper.mathkt.expression.twopartexpression
 
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.RealValue
 import java.math.BigDecimal
 
 class MultiplicationExpression(
@@ -32,21 +33,21 @@ class MultiplicationExpression(
     override fun simplify(): Expression {
         val simp = MultiplicationExpression(vars, f.simplify(), g.simplify())
         with(simp) {
-            if (f is Value && g is Value) {
-                return Value(f.value * g.value)
+            if (f is RealValue && g is RealValue) {
+                return f * g
             }
-            if (f is Value) {
-                if (f.value === BigDecimal.ONE) { // 1 * g == g
+            if (f is IntValue) {
+                if (f == IntValue[1]) { // 1 * g == g
                     return g
-                } else if (f.value === BigDecimal.ZERO) { // 0 * g == 0
-                    return f // value 0
+                } else if (f == IntValue[0]) { // 0 * g == 0
+                    return IntValue[0]
                 }
             }
-            if (g is Value) {
-                if (g.value === BigDecimal.ONE) { // f * 1 == f
+            if (g is RealValue) {
+                if (g == IntValue[1]) { // 1 * g == g
                     return f
-                } else if (g.value === BigDecimal.ZERO) { // f * 0 == 0
-                    return g // value 0
+                } else if (g == IntValue[0]) { // 0 * g == 0
+                    return IntValue[0]
                 }
             }
             if (f is DivisionExpression) {

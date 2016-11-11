@@ -1,7 +1,7 @@
 package com.deanveloper.mathkt.expression.trigexpression
 
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import com.deanveloper.mathkt.sin
 
@@ -36,8 +36,8 @@ class SineExpression(
                 return SineExpression(vars, -f, !isNegative).simplify()
             }
 
-            if (f is Value) {
-                return Value(f.value.sin()).simplify()
+            if (f is RealValue) {
+                return RealValue(f.value.sin()).simplify()
             }
 
             return this

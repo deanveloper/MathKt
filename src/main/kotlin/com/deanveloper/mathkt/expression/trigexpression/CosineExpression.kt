@@ -2,7 +2,7 @@ package com.deanveloper.mathkt.expression.trigexpression
 
 import com.deanveloper.mathkt.cos
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.Value
+import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 
 /**
@@ -36,8 +36,8 @@ class CosineExpression(
                 return CosineExpression(vars, -f, isNegative).simplify()
             }
 
-            if (f is Value) {
-                return Value(f.value.cos()).simplify()
+            if (f is RealValue) {
+                return RealValue(f.value.cos()).simplify()
             }
 
             return this

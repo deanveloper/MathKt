@@ -3,8 +3,8 @@ package com.deanveloper.mathkt.expression.trigexpression
 import com.deanveloper.mathkt.cos
 import com.deanveloper.mathkt.defaultScale
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.Value
-import com.deanveloper.mathkt.expression.asExp
+import com.deanveloper.mathkt.expression.value.RealValue
+import com.deanveloper.mathkt.expression.value.toValue
 import com.deanveloper.mathkt.expression.twopartexpression.ExponentialExpression
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import com.deanveloper.mathkt.sin
@@ -43,8 +43,8 @@ class TangentExpression(
                 return TangentExpression(vars, -f, !isNegative).simplify()
             }
 
-            if (f is Value) {
-                return Value(f.value.sin().divide(f.value.cos(), defaultScale)).simplify()
+            if (f is RealValue) {
+                return RealValue(f.value.sin().divide(f.value.cos(), defaultScale)).simplify()
             }
 
             return this
