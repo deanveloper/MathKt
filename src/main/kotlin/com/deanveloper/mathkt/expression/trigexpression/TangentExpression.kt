@@ -7,6 +7,8 @@ import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.value.toValue
 import com.deanveloper.mathkt.expression.twopartexpression.ExponentialExpression
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
+import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.IrrationalValue
 import com.deanveloper.mathkt.sin
 
 /**
@@ -30,7 +32,7 @@ class TangentExpression(
         return MultiplicationExpression(vars,
                 ExponentialExpression(vars,
                         SecantExpression(vars, f),
-                        2.asExp
+                        IntValue[2]
                 ),
                 f.derive(variable)
         )
@@ -44,7 +46,12 @@ class TangentExpression(
             }
 
             if (f is RealValue) {
-                return RealValue(f.value.sin().divide(f.value.cos(), defaultScale)).simplify()
+                val sin = calcSin(f)
+                val cos = calcSin((f + (IrrationalValue.PI / IntValue[2])) as RealValue)
+
+                if (sin !== null && cos !== null && cos !== IntValue[0]) {
+                    return sin / cos
+                }
             }
 
             return this

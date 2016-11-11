@@ -5,7 +5,10 @@ import java.math.BigInteger
 /**
  * @author Dean
  */
-class IntValue private constructor(val value: BigInteger) : RationalValue(value.toValue, BigInteger.ONE.toValue) {
+class IntValue
+@Deprecated("Use get() for automatic caching", ReplaceWith("IntValue[value]"))
+constructor(val value: BigInteger) :
+        RationalValue(value.toValue, BigInteger.ONE.toValue) {
 
     companion object {
         @JvmStatic
@@ -72,6 +75,10 @@ class IntValue private constructor(val value: BigInteger) : RationalValue(value.
             else -> throw UnsupportedOperationException("Divide operation for IntValue is not implemented yet " +
                     "for ${o.javaClass.simpleName}")
         }
+    }
+
+    override fun onPow(o: RealValue): RealValue {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override operator fun unaryMinus() = IntValue(-value)

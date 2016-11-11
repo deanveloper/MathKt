@@ -3,6 +3,7 @@ package com.deanveloper.mathkt.expression.trigexpression
 import com.deanveloper.mathkt.expression.Expression
 import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
+import com.deanveloper.mathkt.expression.value.IntValue
 import com.deanveloper.mathkt.sin
 
 /**
@@ -37,7 +38,10 @@ class SineExpression(
             }
 
             if (f is RealValue) {
-                return RealValue(f.value.sin()).simplify()
+                val sin = calcSin(f)
+                if (sin !== null) {
+                    return sin
+                }
             }
 
             return this

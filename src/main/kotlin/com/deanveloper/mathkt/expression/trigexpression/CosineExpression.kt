@@ -4,6 +4,9 @@ import com.deanveloper.mathkt.cos
 import com.deanveloper.mathkt.expression.Expression
 import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
+import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.IrrationalValue
+import com.deanveloper.mathkt.expression.value.RationalValue
 
 /**
  * @author Dean
@@ -37,7 +40,10 @@ class CosineExpression(
             }
 
             if (f is RealValue) {
-                return RealValue(f.value.cos()).simplify()
+                val cos = calcSin((f + (IrrationalValue.PI / IntValue[2])) as RealValue)
+                if (cos !== null) {
+                    return cos
+                }
             }
 
             return this

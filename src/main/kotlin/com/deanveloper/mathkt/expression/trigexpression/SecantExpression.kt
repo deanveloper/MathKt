@@ -5,6 +5,8 @@ import com.deanveloper.mathkt.defaultScale
 import com.deanveloper.mathkt.expression.Expression
 import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
+import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.IrrationalValue
 import java.math.BigDecimal
 
 /**
@@ -42,7 +44,10 @@ class SecantExpression(
             }
 
             if (f is RealValue) {
-                return RealValue(BigDecimal.ONE.divide(f.value.cos(), defaultScale)).simplify()
+                val cos = calcSin((f + (IrrationalValue.PI / IntValue[2])) as RealValue)
+                if (cos !== null) {
+                    return IntValue[1] / cos
+                }
             }
 
             return this

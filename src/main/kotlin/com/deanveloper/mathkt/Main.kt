@@ -7,6 +7,8 @@ import com.deanveloper.mathkt.expression.twopartexpression.AdditionExpression
 import com.deanveloper.mathkt.expression.twopartexpression.ExponentialExpression
 import com.deanveloper.mathkt.expression.twopartexpression.LogExpression
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
+import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.IrrationalValue
 import java.math.BigDecimal
 
 /**
@@ -15,11 +17,8 @@ import java.math.BigDecimal
 fun main(vararg args: String) {
     val exp = SineExpression('x',
             LogExpression('x',
-                    RealValue(E),
-                    AdditionExpression('x',
-                            ExponentialExpression('x', Variable('x'), RealValue(BigDecimal.valueOf(3))),
-                            MultiplicationExpression('x', RealValue(BigDecimal.ZERO), Variable('x'))
-                    )
+                    IrrationalValue.E,
+                    ExponentialExpression('x', Variable['x'], IntValue[3]) + IntValue[0] * Variable['x']
             )
     )
 
@@ -28,5 +27,5 @@ fun main(vararg args: String) {
     println(exp.derive('x'))
     println(exp.derive('x').simplify())
 
-    println(exp(RealValue(BigDecimal.valueOf(5))).simplify())
+    println(exp(IntValue[5]).simplify())
 }

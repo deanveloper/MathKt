@@ -21,6 +21,7 @@ abstract class RealValue(isNegative: Boolean) : Expression(charArrayOf(), isNega
     abstract fun onMinus(o: RealValue): RealValue
     abstract fun onTimes(o: RealValue): RealValue
     abstract fun onDiv(o: RealValue): RealValue
+    abstract fun onPow(o: RealValue): RealValue
 
     override operator fun times(e: Expression): Expression {
         return if (e is RealValue) onTimes(e) else super.times(e)
@@ -36,6 +37,10 @@ abstract class RealValue(isNegative: Boolean) : Expression(charArrayOf(), isNega
 
     override operator fun minus(e: Expression): Expression {
         return if (e is RealValue) onTimes(e) else super.times(e)
+    }
+
+    override infix fun pow(e: Expression): Expression {
+        return if (e is RealValue) onPow(e) else super.times(e)
     }
 
     operator fun mod(o: RealValue): RealValue = this.onMinus(this.onDiv(o)).floor().onTimes(o)

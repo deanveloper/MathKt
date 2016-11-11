@@ -4,6 +4,8 @@ import com.deanveloper.mathkt.defaultScale
 import com.deanveloper.mathkt.expression.Expression
 import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
+import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.IrrationalValue
 import com.deanveloper.mathkt.sin
 import java.math.BigDecimal
 
@@ -42,7 +44,12 @@ class CotangentExpression(
             }
 
             if (f is RealValue) {
-                return RealValue(BigDecimal.ONE.divide(f.value.sin(), defaultScale)).simplify()
+                val sin = calcSin(f)
+                val cos = calcSin((f + (IrrationalValue.PI / IntValue[2])) as RealValue)
+
+                if (sin !== null && cos !== null && sin !== IntValue[0]) {
+                    return cos / sin
+                }
             }
 
             return this

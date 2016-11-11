@@ -1,9 +1,9 @@
 package com.deanveloper.mathkt.expression
 
-import com.deanveloper.mathkt.expression.twopartexpression.AdditionExpression
-import com.deanveloper.mathkt.expression.twopartexpression.DivisionExpression
-import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
-import com.deanveloper.mathkt.expression.twopartexpression.SubtractionExpression
+import com.deanveloper.mathkt.expression.twopartexpression.*
+import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.IrrationalValue
+import com.deanveloper.mathkt.expression.value.RealValue
 import java.util.*
 
 /**
@@ -39,6 +39,8 @@ abstract class Expression(vars: CharArray, val isNegative: Boolean = false) {
 
     open operator fun div(e: Expression): Expression = DivisionExpression(this.vars + e.vars, this, e)
 
+    open infix fun pow(e: Expression): Expression = ExponentialExpression(this.vars + e.vars, this, e)
+
     abstract class TwoPartExpression(
             variables: CharArray,
             val f: Expression,
@@ -66,6 +68,33 @@ abstract class Expression(vars: CharArray, val isNegative: Boolean = false) {
             isNegative: Boolean = false
     ) : Expression(variables, isNegative) {
         private val hashCode = f.hashCode() xor this.javaClass.name.hashCode()
+
+        companion object {
+            @JvmStatic private val SINES by lazy {
+                mapOf(
+                        IntValue[0] to IntValue[0],
+                        (IrrationalValue.PI / IntValue[6]) to (IntValue[1] / IntValue[2]),
+                        (IrrationalValue.PI / IntValue[4]) to (IrrationalValue.SQRT_2 / IntValue[2]),
+                        (IrrationalValue.PI / IntValue[3]) to (IrrationalValue.SQRT_3 / IntValue[2]),
+                        (IrrationalValue.PI / IntValue[2]) to IntValue[1],
+                        (IntValue[2] * IrrationalValue.PI / IntValue[3]) to (IrrationalValue.SQRT_3 / IntValue[2]),
+                        (IntValue[3] * IrrationalValue.PI / IntValue[4]) to (IrrationalValue.SQRT_2 / IntValue[2]),
+                        (IntValue[5] * IrrationalValue.PI / IntValue[6]) to (IntValue[1] / IntValue[2]),
+                        (IrrationalValue.PI) to IntValue[0],
+                        (IntValue[7] * IrrationalValue.PI / IntValue[6]) to -(IntValue[1] / IntValue[2]),
+                        (IntValue[5] * IrrationalValue.PI / IntValue[4]) to -(IrrationalValue.SQRT_2 / IntValue[2]),
+                        (IntValue[4] * IrrationalValue.PI / IntValue[3]) to -(IrrationalValue.SQRT_3 / IntValue[2]),
+                        (IntValue[3] * IrrationalValue.PI / IntValue[2]) to IntValue[-1],
+                        (IntValue[5] * IrrationalValue.PI / IntValue[3]) to -(IrrationalValue.SQRT_3 / IntValue[2]),
+                        (IntValue[7] * IrrationalValue.PI / IntValue[4]) to -(IrrationalValue.SQRT_2 / IntValue[2]),
+                        (IntValue[11] * IrrationalValue.PI / IntValue[6]) to -(IntValue[1] / IntValue[2])
+                )
+            }
+
+            @JvmStatic protected fun calcSin(value: RealValue): RealValue? {
+                return SINES[value.mod((IntValue[2] * IrrationalValue.PI) as RealValue)] as? RealValue?
+            }
+        }
 
         override fun equals(other: Any?): Boolean {
             if (other is TrigExpression && this.javaClass.name == other.javaClass.name) {

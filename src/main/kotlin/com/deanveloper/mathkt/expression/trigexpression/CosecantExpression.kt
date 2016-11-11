@@ -1,11 +1,11 @@
 package com.deanveloper.mathkt.expression.trigexpression
 
-import com.deanveloper.mathkt.defaultScale
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
-import com.deanveloper.mathkt.sin
-import java.math.BigDecimal
+import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.IrrationalValue
+import com.deanveloper.mathkt.expression.value.RationalValue
+import com.deanveloper.mathkt.expression.value.RealValue
 
 /**
  * @author Dean
@@ -42,7 +42,10 @@ class CosecantExpression(
             }
 
             if (f is RealValue) {
-                return RealValue(BigDecimal.ONE.divide(f.value.sin(), defaultScale)).simplify()
+                val sin = calcSin(f)
+                if (sin !== null) {
+                    return IntValue[1] / sin
+                }
             }
 
             return this

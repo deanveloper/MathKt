@@ -45,6 +45,10 @@ open class RationalValue(val top: IntValue, val bottom: IntValue) : RealValue(to
         }
     }
 
+    override fun onPow(o: RealValue): RealValue {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun floor(): IntValue {
         return (top.value / bottom.value).toValue
     }
