@@ -58,7 +58,8 @@ open class RationalValue(val top: BigInteger, val bottom: BigInteger)
             return RationalValue(-top, -bottom).simplify()
         }
 
-        return this
+        val gcd = top.gcd(bottom)
+        return RationalValue(top / gcd, bottom / gcd)
     }
 
     override operator fun unaryMinus(): RealValue {

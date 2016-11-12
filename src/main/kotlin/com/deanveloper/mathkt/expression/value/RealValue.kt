@@ -28,11 +28,13 @@ abstract class RealValue(isNegative: Boolean) : Expression(charArrayOf(), isNega
     }
 
     override operator fun minus(e: Expression): Expression {
-        return plus(-e)
+        // Create a SubtractionExpression and simplify it to avoid recursion
+        return super.minus(e).simplify()
     }
 
     override operator fun div(e: Expression): Expression {
-        return times((IntValue[1] / e).simplify())
+        // Create a DivisionExpression and simplify it to avoid recursion
+        return super.div(e).simplify()
     }
 
     override infix fun pow(e: Expression): Expression {

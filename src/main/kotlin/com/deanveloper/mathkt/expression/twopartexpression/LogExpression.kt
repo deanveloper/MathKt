@@ -29,21 +29,19 @@ class LogExpression(
                 return f.derive(variable) / f
             } else {
                 // when f(x) = logBASE(c, x) and c is constant, f'(x) = (x'/(x * ln(c))
-                return (f.derive(variable) / (f * LogExpression(vars, IrrationalValue.E, base)))
+                return (f.derive(variable) / (f * (base logOfBase IrrationalValue.E)))
             }
         } else {
-            // when h(x) = logBASE(b(x), f(x)), h(x) = ln(f(x)) / ln(b(x)) and use quotient rule to get h'(x)
-            return (LogExpression(vars, IrrationalValue.E, f)
-                            / LogExpression(vars, IrrationalValue.E, base)
-                    ).derive(variable)
+            // when h(x) = logBASE(b(x), f(x)) -> h(x) = ln(f(x)) / ln(b(x)) and use quotient rule to get h'(x)
+            return ((f logOfBase IrrationalValue.E) / (base logOfBase IrrationalValue.E)).derive(variable)
         }
     }
 
     override fun simplify(): Expression {
-        val simp = LogExpression(vars, base.simplify(), f.simplify())
+        val simp = f.simplify() logOfBase base.simplify()
         with(simp) {
             if (f is ExponentialExpression) {
-                return MultiplicationExpression(vars, f.g, LogExpression(vars, base, f.f)).simplify()
+                return (f.g * (f.f logOfBase base)).simplify()
             }
             if (f is RealValue) {
                 if (f == IntValue[1]) {

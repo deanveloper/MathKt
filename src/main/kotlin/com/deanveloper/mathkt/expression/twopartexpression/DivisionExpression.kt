@@ -25,17 +25,11 @@ class DivisionExpression(
 
     override fun derive(variable: Char): Expression {
         // (h / l)' == (l * h' - h - l') / (l*l)
-        return DivisionExpression(vars,
-                SubtractionExpression(vars,
-                        MultiplicationExpression(vars, g, f.derive(variable)),
-                        MultiplicationExpression(vars, f, g.derive(variable))
-                ),
-                ExponentialExpression(g.vars, g, IntValue[2])
-        )
+        return (g * f.derive(variable) - f * g.derive(variable)) / (g pow IntValue[2])
     }
 
     override fun simplify(): Expression {
-        val simp = DivisionExpression(vars, f.simplify(), g.simplify())
+        val simp = f.simplify() / g.simplify()
         with(simp) {
             if (g is IntValue) {
                 if (g == IntValue[1]) {

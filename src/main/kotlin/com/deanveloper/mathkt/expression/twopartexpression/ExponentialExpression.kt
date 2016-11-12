@@ -26,45 +26,19 @@ class ExponentialExpression(
     }
 
     override fun derive(variable: Char): Expression {
-        if (f.vars.isEmpty() && g.vars.isNotEmpty()) { // power function
+        if (!f.vars.contains(variable) && g.vars.contains(variable)) { // power function
+
             // when f(x) = c^x and c is constant, f'(x) = c^x * ln(x) (with chain rule appended)
-            return MultiplicationExpression(vars,
-                    MultiplicationExpression(vars,
-                            this,
-                            LogExpression(vars,
-                                    IrrationalValue.E,
-                                    f
-                            )
-                    ),
-                    g.derive(variable)
-            )
-        } else if (f.vars.isNotEmpty() && g.vars.isEmpty()) { // exponential function
+            return this * (f logOfBase IrrationalValue.E) * g.derive(variable)
+
+        } else if (f.vars.contains(variable) && !g.vars.contains(variable)) { // exponential function
+
             // when f(x) = x^c and c is constant, f'(x) = c * x^(c-1) (with chain rule appended)
-            return MultiplicationExpression(vars,
-                    MultiplicationExpression(vars,
-                            g,
-                            ExponentialExpression(vars,
-                                    f,
-                                    SubtractionExpression(vars,
-                                            g,
-                                            IntValue[1]
-                                    )
-                            )
-                    ),
-                    f.derive(variable)
-            )
-        } else if (f.vars.isNotEmpty() && g.vars.isNotEmpty()) { // weird-ass function
+            return g * (f pow (g - IntValue[1])) * f.derive(variable)
+
+        } else if (f.vars.contains(variable) && g.vars.contains(variable)) { // weird-ass function
             // when h(x) = f(x) ^ g(x), h'(x) = h(x) * (g(x) / f(x) + g'(x) * ln(g(x))
-            return MultiplicationExpression(vars,
-                    this,
-                    AdditionExpression(vars,
-                            DivisionExpression(vars, g, f),
-                            MultiplicationExpression(vars,
-                                    g.derive(variable),
-                                    LogExpression(vars, IrrationalValue.E, f)
-                            )
-                    )
-            )
+            return this * ((g / f) + (g.derive(variable) * f logOfBase IrrationalValue.E))
 
         } else {
             // when f(x) = c ^ d, where c and d are constants, f'(x) = 0
@@ -73,13 +47,13 @@ class ExponentialExpression(
     }
 
     override fun simplify(): Expression {
-        val simp = ExponentialExpression(vars, f.simplify(), g.simplify())
+        val simp = f.simplify() pow g.simplify()
         with(simp) {
             if (f is RealValue && g is RealValue) {
                 return f.pow(g)
             }
             if (f is ExponentialExpression) {
-                return ExponentialExpression(vars, f.f, MultiplicationExpression(vars, f.g, g)).simplify()
+                return (f.f pow (f.g * g)).simplify()
             }
 
             return this

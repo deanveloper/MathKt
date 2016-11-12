@@ -47,6 +47,8 @@ abstract class Expression(vars: CharArray, val isNegative: Boolean = false) {
 
     open infix fun root(e: Expression): Expression = ExponentialExpression(this.vars + e.vars, e, IntValue[1] / this)
 
+    open infix fun logOfBase(e: Expression): Expression = LogExpression(this.vars + e.vars, e, this)
+
     abstract class TwoPartExpression(
             variables: CharArray,
             val f: Expression,

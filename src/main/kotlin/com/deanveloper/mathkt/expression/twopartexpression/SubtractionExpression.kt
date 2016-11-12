@@ -23,11 +23,11 @@ class SubtractionExpression(
     }
 
     override fun derive(variable: Char): Expression {
-        return SubtractionExpression(vars, f.derive(variable), g.derive(variable))
+        return f.derive(variable) - g.derive(variable)
     }
 
     override fun simplify(): Expression {
-        val simp = SubtractionExpression(vars, f.simplify(), g.simplify())
+        val simp = f.simplify() - g.simplify()
         with(simp) {
             if (g.isNegative) {
                 return AdditionExpression(vars, f, -g).simplify()

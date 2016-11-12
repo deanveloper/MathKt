@@ -7,7 +7,7 @@ import java.math.RoundingMode
 /**
  * @author Dean
  */
-class IrrationalValue(
+open class IrrationalValue(
         val value: String,
         val baseApprox: BigDecimal,
         val plus: RealValue = IntValue[0],
@@ -61,11 +61,9 @@ class IrrationalValue(
         return false
     }
 
-    override fun onPlus(o: RealValue) = IrrationalValue(value, approx, plus.onPlus(o), times)
+    override fun onPlus(o: RealValue) = IrrationalValue(value, approx, plus.onPlus(o), times, power)
 
-    override fun onTimes(o: RealValue) = IrrationalValue(value, approx, plus, times.onTimes(o))
+    override fun onTimes(o: RealValue) = IrrationalValue(value, approx, plus, times.onTimes(o), power)
 
-    override fun onPow(o: RealValue): RealValue {
-        TODO("Not implemented yet")
-    }
+    override fun onPow(o: RealValue) = IrrationalValue(value, approx, plus, times, power.onTimes(o))
 }

@@ -24,14 +24,11 @@ class MultiplicationExpression(
 
     override fun derive(variable: Char): Expression {
         // (f * g)' == f * g' + f' * g
-        return AdditionExpression(vars,
-                MultiplicationExpression(vars, f.derive(variable), g),
-                MultiplicationExpression(vars, f, g.derive(variable))
-        )
+        return f * g.derive(variable) + f.derive(variable) * g
     }
 
     override fun simplify(): Expression {
-        val simp = MultiplicationExpression(vars, f.simplify(), g.simplify())
+        val simp = f.simplify() * g.simplify()
         with(simp) {
             if (f is RealValue && g is RealValue) {
                 return f * g
@@ -51,10 +48,10 @@ class MultiplicationExpression(
                 }
             }
             if (f is DivisionExpression) {
-                return DivisionExpression(vars, MultiplicationExpression(vars, g, f.f).simplify(), f.g)
+                return ((g * f.f).simplify() / f.g).simplify()
             }
             if (g is DivisionExpression) {
-                return DivisionExpression(vars, MultiplicationExpression(vars, f, g.f).simplify(), g.g)
+                return ((f * g.f).simplify() / g.g).simplify()
             }
 
             //TODO: x^c * x^d == x^(c+d)
