@@ -1,45 +1,41 @@
 package com.deanveloper.mathkt.expression.value
 
+import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
  * @author Dean
  */
-open class RationalValue(val top: IntValue, val bottom: IntValue) : RealValue(top.isNegative != bottom.isNegative) {
+open class RationalValue(val top: BigInteger, val bottom: BigInteger)
+    : RealValue((top.signum() === -1) != (bottom.signum() === -1)) {
+
+    override val approx: BigDecimal by lazy {
+        BigDecimal(top) / BigDecimal(bottom)
+    }
 
     private val hash = ((top.hashCode() and 0x0000FFFF) shl 32) or (bottom.hashCode() and 0x0000FFFF)
 
     override fun onPlus(o: RealValue): RealValue {
         return when (o) {
-            is IntValue -> o.onPlus(this) // let IntValue's plus operation handle it
+            is IntValue, is IrrationalValue -> o.onPlus(this) // delegate to other onPlus handler
             is RationalValue ->
                 RationalValue(
-                        (top.value * o.bottom.value + o.top.value * bottom.value).toValue,
-                        (o.bottom * o.top) as IntValue
-                )
+                        top * o.bottom + o.top * bottom,
+                        o.bottom * o.top
+                ).simplify()
             else -> throw UnsupportedOperationException("Plus operation for RationalValue is not implemented yet " +
                     "for ${o.javaClass.simpleName}")
         }
     }
 
-    override fun onMinus(o: RealValue) = onPlus(-o)
-
     override fun onTimes(o: RealValue): RealValue {
         return when (o) {
-            is IntValue -> o.onTimes(this) // let IntValue's times operation handle it
+            is IntValue, is IrrationalValue -> o.onTimes(this) // delegate to other onTimes handler
             is RationalValue ->
                 RationalValue(
-                        (this.top * o.top) as IntValue,
-                        (this.bottom * o.bottom) as IntValue
+                        this.top * o.top,
+                        this.bottom * o.bottom
                 )
-            else -> throw UnsupportedOperationException("Times operation for IntValue is not implemented yet " +
-                    "for ${o.javaClass.simpleName}")
-        }
-    }
-
-    override fun onDiv(o: RealValue): RealValue {
-        return when (o) {
-            is RationalValue -> this.onTimes(o.inverse()) // Also works for IntValue
             else -> throw UnsupportedOperationException("Times operation for IntValue is not implemented yet " +
                     "for ${o.javaClass.simpleName}")
         }
@@ -50,15 +46,15 @@ open class RationalValue(val top: IntValue, val bottom: IntValue) : RealValue(to
     }
 
     override fun floor(): IntValue {
-        return (top.value / bottom.value).toValue
+        return IntValue[top / bottom]
     }
 
     override fun simplify(): RealValue {
-        if (top.value % bottom.value == BigInteger.ZERO) {
-            return IntValue[top.value / bottom.value]
+        if (top % bottom == BigInteger.ZERO) {
+            return IntValue[top / bottom]
         }
 
-        if (top.isNegative && bottom.isNegative) {
+        if (top.signum() === 1 && bottom.signum() !== 1) {
             return RationalValue(-top, -bottom).simplify()
         }
 
@@ -66,7 +62,7 @@ open class RationalValue(val top: IntValue, val bottom: IntValue) : RealValue(to
     }
 
     override operator fun unaryMinus(): RealValue {
-        if (bottom.isNegative) {
+        if (bottom.signum() === -1) {
             return RationalValue(top, -bottom)
         }
 

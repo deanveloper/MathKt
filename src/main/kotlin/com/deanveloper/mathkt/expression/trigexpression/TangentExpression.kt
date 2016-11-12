@@ -1,15 +1,11 @@
 package com.deanveloper.mathkt.expression.trigexpression
 
-import com.deanveloper.mathkt.cos
-import com.deanveloper.mathkt.defaultScale
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.value.RealValue
-import com.deanveloper.mathkt.expression.value.toValue
 import com.deanveloper.mathkt.expression.twopartexpression.ExponentialExpression
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import com.deanveloper.mathkt.expression.value.IntValue
 import com.deanveloper.mathkt.expression.value.IrrationalValue
-import com.deanveloper.mathkt.sin
+import com.deanveloper.mathkt.expression.value.RealValue
 
 /**
  * @author Dean

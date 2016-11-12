@@ -1,5 +1,6 @@
 package com.deanveloper.mathkt.expression.value
 
+import com.deanveloper.mathkt.pow
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -8,11 +9,12 @@ import java.math.RoundingMode
  */
 class IrrationalValue(
         val value: String,
-        val approx: BigDecimal,
+        val baseApprox: BigDecimal,
         val plus: RealValue = IntValue[0],
-        val times: RealValue = IntValue[0],
-        isNegative: Boolean = approx.signum() === -1
-) : RealValue(isNegative) {
+        val times: RealValue = IntValue[1],
+        val power: RealValue = IntValue[1]
+) : RealValue((baseApprox * times.approx + plus.approx).signum() === -1) {
+    override val approx: BigDecimal = (baseApprox.pow(power.approx)) * times.approx + plus.approx
 
     companion object {
         @JvmStatic val E = IrrationalValue("e", BigDecimal("2.7182818284590452353"))
@@ -22,17 +24,14 @@ class IrrationalValue(
     }
 
     override fun floor(): IntValue {
-        return approx.setScale(0, RoundingMode.FLOOR).toBigIntegerExact().toValue
+        return IntValue[approx.setScale(0, RoundingMode.FLOOR).toBigIntegerExact()]
     }
 
     override fun simplify(): IrrationalValue {
-        if (times.isNegative) {
-            IrrationalValue(value, approx, plus.simplify(), -times.simplify(), !isNegative)
-        }
-        return IrrationalValue(value, approx, plus.simplify(), times.simplify(), isNegative)
+        return IrrationalValue(value, baseApprox, plus.simplify(), times.simplify(), power.simplify())
     }
 
-    override operator fun unaryMinus() = IrrationalValue(value, -approx, -plus, times, !isNegative)
+    override operator fun unaryMinus() = IrrationalValue(value, baseApprox, -plus, -times, power)
 
     override fun toString(): String {
         return buildString {
@@ -62,15 +61,11 @@ class IrrationalValue(
         return false
     }
 
-    override fun onPlus(o: RealValue) = IrrationalValue(value, approx, plus.onPlus(o), times, isNegative)
+    override fun onPlus(o: RealValue) = IrrationalValue(value, approx, plus.onPlus(o), times)
 
-    override fun onMinus(o: RealValue) = IrrationalValue(value, approx, plus.onMinus(o), times, isNegative)
-
-    override fun onTimes(o: RealValue) = IrrationalValue(value, approx, plus, times.onTimes(o), isNegative)
-
-    override fun onDiv(o: RealValue) = IrrationalValue(value, approx, plus, times.onDiv(o), isNegative)
+    override fun onTimes(o: RealValue) = IrrationalValue(value, approx, plus, times.onTimes(o))
 
     override fun onPow(o: RealValue): RealValue {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("Not implemented yet")
     }
 }

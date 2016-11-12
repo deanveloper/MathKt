@@ -1,26 +1,24 @@
 package com.deanveloper.mathkt.expression.value
 
+import java.math.BigDecimal
 import java.math.BigInteger
+import java.util.*
 
 /**
  * @author Dean
  */
 class IntValue
 @Deprecated("Use get() for automatic caching", ReplaceWith("IntValue[value]"))
-constructor(val value: BigInteger) :
-        RationalValue(value.toValue, BigInteger.ONE.toValue) {
+constructor(val value: BigInteger)
+    : RationalValue(value, BigInteger.ONE) {
+
+    override val approx: BigDecimal by lazy { BigDecimal(value) }
 
     companion object {
         @JvmStatic
-        private val cache = mutableMapOf<BigInteger, IntValue>()
+        private val cache = WeakHashMap<BigInteger, IntValue>()
 
-        init {
-            for (i in 0L..10L) {
-                cache[BigInteger.valueOf(i)] = IntValue(BigInteger.valueOf(i))
-            }
-        }
-
-        @JvmStatic operator fun get(value: BigInteger) = cache.getOrElse(value) { IntValue(value) }
+        @JvmStatic operator fun get(value: BigInteger): IntValue = cache.getOrPut(value) { IntValue(value) }
         @JvmStatic operator fun get(value: Long) = get(BigInteger.valueOf(value))
         @JvmStatic operator fun get(value: Int) = get(BigInteger.valueOf(value.toLong()))
         @JvmStatic operator fun get(value: Short) = get(BigInteger.valueOf(value.toLong()))
@@ -41,7 +39,7 @@ constructor(val value: BigInteger) :
             is IntValue -> IntValue[value + o.value]
             is RationalValue ->
                 RationalValue(
-                        (value * o.bottom.value + o.top.value).toValue,
+                        (value * o.bottom + o.top),
                         o.bottom
                 )
             else -> throw UnsupportedOperationException("Plus operation for IntValue is not implemented yet " +
@@ -57,22 +55,10 @@ constructor(val value: BigInteger) :
             is IntValue -> IntValue[value * o.value]
             is RationalValue ->
                 RationalValue(
-                        (this * o.top) as IntValue,
+                        this.value * o.top,
                         o.bottom
                 )
             else -> throw UnsupportedOperationException("Times operation for IntValue is not implemented yet " +
-                    "for ${o.javaClass.simpleName}")
-        }
-    }
-
-    /**
-     * Optimized for IntValue
-     */
-    override fun onDiv(o: RealValue): RealValue {
-        return when (o) {
-            is IntValue -> RationalValue(this, o)
-            is RationalValue -> this.onTimes(o.inverse())
-            else -> throw UnsupportedOperationException("Divide operation for IntValue is not implemented yet " +
                     "for ${o.javaClass.simpleName}")
         }
     }
@@ -91,8 +77,13 @@ constructor(val value: BigInteger) :
         if (o is IntValue) {
             return IntValue[this.value.pow(o.value.toInt())]
         } else if (o is RationalValue) {
-            return this pow o.top *
+            val intPart = o.floor()
+            val fracPart = (o - intPart) as RationalValue
+
+            TODO("Not implemented yet")
         }
+
+        TODO("Not implemented yet")
     }
 
     override operator fun unaryMinus() = IntValue(-value)

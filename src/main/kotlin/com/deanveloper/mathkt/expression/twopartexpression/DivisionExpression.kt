@@ -43,18 +43,18 @@ class DivisionExpression(
                 }
 
                 if (f is IntValue) {
-                    return RationalValue(f, g).simplify()
+                    return RationalValue(f.value, g.value).simplify()
                 }
             }
 
             if (f is DivisionExpression) {
                 // (f/g)/h == f/(g*h)
-                return DivisionExpression(vars, f.f, MultiplicationExpression(vars, f.g, g)).simplify()
+                return (f.f / (f.g * g)).simplify()
             }
 
             // same as above but for values
             if (f is RationalValue) {
-                return DivisionExpression(vars, f.top, MultiplicationExpression(vars, f.bottom, g)).simplify()
+                return (IntValue[f.top] / (IntValue[f.bottom] * g)).simplify()
             }
 
             // f/(g/h) == (f*h)/g
@@ -64,7 +64,7 @@ class DivisionExpression(
 
             // same as above but for values
             if (g is RationalValue) {
-                return DivisionExpression(vars, MultiplicationExpression(vars, f, g.bottom), g.top).simplify()
+                return ((f * IntValue[g.bottom]) / IntValue[g.top]).simplify()
             }
 
             if (f is MultiplicationExpression) {
@@ -80,7 +80,7 @@ class DivisionExpression(
                 // (6x)/3 == 2x || (3x)/6 == x/2 etc
                 if (valuePart != null && nonValuePart != null && g is IntValue) {
 
-                    val value = RationalValue(valuePart, g).simplify()
+                    val value = RationalValue(valuePart.value, g.value).simplify()
 
                     // (6x)/3 == 2x
                     if (value is IntValue) {
@@ -89,14 +89,14 @@ class DivisionExpression(
 
                     // (6x)/4 == (3x) / 2
                     if (value is RationalValue) {
-                        return ((value.top * f.g) / value.bottom).simplify()
+                        return ((IntValue[value.top] * f.g) / IntValue[value.bottom]).simplify()
                     }
 
                     // (3x) / 6 == (x / 2)
-                    val inverse = (g.onDiv(valuePart)).simplify()
+                    val inverse = (g / valuePart).simplify()
 
                     if(inverse is IntValue) {
-                        return DivisionExpression(vars, nonValuePart, inverse).simplify() // put value in denominator
+                        return (nonValuePart / inverse).simplify() // put value in denominator
                     }
                 }
             }
