@@ -5,7 +5,7 @@ import java.math.BigInteger
 
 abstract class RealValue(isNegative: Boolean) : Expression(charArrayOf(), isNegative) {
 
-    override final fun execute(args: Map<Char, Expression>) = this
+    override final fun insertValues(args: Map<Char, Expression>) = this
 
     override final fun derive(variable: Char) = IntValue[0]
 
@@ -40,6 +40,10 @@ abstract class RealValue(isNegative: Boolean) : Expression(charArrayOf(), isNega
     }
 
     override infix fun pow(e: Expression): Expression {
+        return if (e is RealValue) onPow(e) else super.times(e)
+    }
+
+    override infix fun root(n: Expression): Expression {
         return if (e is RealValue) onPow(e) else super.times(e)
     }
 

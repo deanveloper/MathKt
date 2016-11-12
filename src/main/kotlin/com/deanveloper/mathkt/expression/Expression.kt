@@ -19,13 +19,21 @@ abstract class Expression(vars: CharArray, val isNegative: Boolean = false) {
         this.vars = vars.distinct().toCharArray()
     }
 
-    operator fun invoke(vararg args: Expression): Expression {
+    operator fun invoke(vararg args: Expression): RealValue {
         return execute(vars.zip(args).toMap())
     }
 
-    abstract fun execute(args: Map<Char, Expression>): Expression
+    abstract fun insertValues(args: Map<Char, Expression>): Expression
 
     abstract fun derive(variable: Char): Expression
+
+    fun execute(args: Map<Char, Expression>): RealValue {
+        if(!args.keys.containsAll(vars.toList())) {
+            throw IllegalArgumentException("args does not supply all necessary arguments!")
+        }
+
+        return insertValues(args).simplify() as RealValue
+    }
 
     abstract fun simplify(): Expression
 
@@ -40,6 +48,8 @@ abstract class Expression(vars: CharArray, val isNegative: Boolean = false) {
     open operator fun div(e: Expression): Expression = DivisionExpression(this.vars + e.vars, this, e)
 
     open infix fun pow(e: Expression): Expression = ExponentialExpression(this.vars + e.vars, this, e)
+
+    open infix fun root(e: Expression): Expression = ExponentialExpression(this.vars + e.vars, e, IntValue[1] / this)
 
     abstract class TwoPartExpression(
             variables: CharArray,

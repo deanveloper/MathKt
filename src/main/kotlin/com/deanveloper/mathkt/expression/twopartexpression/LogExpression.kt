@@ -18,8 +18,8 @@ class LogExpression(
             isNegative: Boolean = false
     ) : this(charArrayOf(variable), base, f, isNegative)
 
-    override fun execute(args: Map<Char, Expression>): LogExpression {
-        return LogExpression(vars, base.execute(args), f.execute(args))
+    override fun insertValues(args: Map<Char, Expression>): LogExpression {
+        return LogExpression(vars, base.insertValues(args), f.insertValues(args))
     }
 
     override fun derive(variable: Char): Expression {

@@ -22,8 +22,8 @@ class CotangentExpression(
                 isNegative: Boolean = false
     ) : this(charArrayOf(variable), f, isNegative)
 
-    override fun execute(args: Map<Char, Expression>): CotangentExpression {
-        return CotangentExpression(vars, f.execute(args), isNegative)
+    override fun insertValues(args: Map<Char, Expression>): CotangentExpression {
+        return CotangentExpression(vars, f.insertValues(args), isNegative)
     }
 
     override fun derive(variable: Char): Expression {

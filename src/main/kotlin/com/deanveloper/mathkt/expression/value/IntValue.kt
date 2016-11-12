@@ -78,7 +78,21 @@ constructor(val value: BigInteger) :
     }
 
     override fun onPow(o: RealValue): RealValue {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (this == IntValue[0]) {
+            if (o != IntValue[0]) {
+                return IntValue[0]
+            } else {
+                throw ArithmeticException("0.pow(0) is undefined!")
+            }
+        }
+        if (this == IntValue[1]) {
+            return IntValue[1]
+        }
+        if (o is IntValue) {
+            return IntValue[this.value.pow(o.value.toInt())]
+        } else if (o is RationalValue) {
+            return this pow o.top *
+        }
     }
 
     override operator fun unaryMinus() = IntValue(-value)

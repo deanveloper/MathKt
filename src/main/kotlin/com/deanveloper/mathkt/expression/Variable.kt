@@ -16,7 +16,7 @@ constructor(val variable: Char, negative: Boolean = false) : Expression(charArra
         @[JvmOverloads JvmStatic] fun valueOf(value: Char, negative: Boolean = false) = get(value, negative)
     }
 
-    override fun execute(args: Map<Char, Expression>) = args[variable]?.execute(args) ?: this
+    override fun insertValues(args: Map<Char, Expression>) = args[variable]?.insertValues(args) ?: this
     override fun derive(variable: Char): Expression {
         if (variable === this.variable) {
             return IntValue[1]

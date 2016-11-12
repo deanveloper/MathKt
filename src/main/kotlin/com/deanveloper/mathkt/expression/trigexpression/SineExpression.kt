@@ -19,8 +19,8 @@ class SineExpression(
                 isNegative: Boolean = false
     ) : this(charArrayOf(variable), f, isNegative)
 
-    override fun execute(args: Map<Char, Expression>): SineExpression {
-        return SineExpression(vars, f.execute(args), isNegative)
+    override fun insertValues(args: Map<Char, Expression>): SineExpression {
+        return SineExpression(vars, f.insertValues(args), isNegative)
     }
 
     override fun derive(variable: Char): Expression {
