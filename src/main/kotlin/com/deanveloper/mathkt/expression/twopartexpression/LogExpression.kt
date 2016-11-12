@@ -1,8 +1,8 @@
 package com.deanveloper.mathkt.expression.twopartexpression
 
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.value.IntValue
-import com.deanveloper.mathkt.expression.value.IrrationalValue
+import com.deanveloper.mathkt.expression.value.rational.IntValue
+import com.deanveloper.mathkt.expression.value.irrational.IrrationalValue
 import com.deanveloper.mathkt.expression.value.RealValue
 
 class LogExpression(

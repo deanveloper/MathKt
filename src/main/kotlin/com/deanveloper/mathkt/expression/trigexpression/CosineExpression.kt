@@ -4,9 +4,9 @@ import com.deanveloper.mathkt.cos
 import com.deanveloper.mathkt.expression.Expression
 import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
-import com.deanveloper.mathkt.expression.value.IntValue
-import com.deanveloper.mathkt.expression.value.IrrationalValue
-import com.deanveloper.mathkt.expression.value.RationalValue
+import com.deanveloper.mathkt.expression.value.rational.IntValue
+import com.deanveloper.mathkt.expression.value.irrational.IrrationalValue
+import com.deanveloper.mathkt.expression.value.rational.RationalValue
 
 /**
  * @author Dean

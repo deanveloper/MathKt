@@ -1,5 +1,7 @@
-package com.deanveloper.mathkt.expression.value
+package com.deanveloper.mathkt.expression.value.rational
 
+import com.deanveloper.mathkt.expression.value.rational.RationalValue
+import com.deanveloper.mathkt.expression.value.RealValue
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.*
@@ -36,7 +38,7 @@ constructor(val value: BigInteger)
      */
     override fun onPlus(o: RealValue): RealValue {
         return when (o) {
-            is IntValue -> IntValue[value + o.value]
+            is IntValue -> Companion[value + o.value]
             is RationalValue ->
                 RationalValue(
                         (value * o.bottom + o.top),
@@ -52,7 +54,7 @@ constructor(val value: BigInteger)
      */
     override fun onTimes(o: RealValue): RealValue {
         return when (o) {
-            is IntValue -> IntValue[value * o.value]
+            is IntValue -> Companion[value * o.value]
             is RationalValue ->
                 RationalValue(
                         this.value * o.top,
@@ -64,18 +66,18 @@ constructor(val value: BigInteger)
     }
 
     override fun onPow(o: RealValue): RealValue {
-        if (this == IntValue[0]) {
-            if (o != IntValue[0]) {
-                return IntValue[0]
+        if (this == Companion[0]) {
+            if (o != Companion[0]) {
+                return Companion[0]
             } else {
                 throw ArithmeticException("0.pow(0) is undefined!")
             }
         }
-        if (this == IntValue[1]) {
-            return IntValue[1]
+        if (this == Companion[1]) {
+            return Companion[1]
         }
         if (o is IntValue) {
-            return IntValue[this.value.pow(o.value.toInt())]
+            return Companion[this.value.pow(o.value.toInt())]
         } else if (o is RationalValue) {
             val intPart = o.floor()
             val fracPart = (o - intPart) as RationalValue

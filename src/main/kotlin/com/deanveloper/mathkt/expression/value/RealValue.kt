@@ -1,6 +1,7 @@
 package com.deanveloper.mathkt.expression.value
 
 import com.deanveloper.mathkt.expression.Expression
+import com.deanveloper.mathkt.expression.value.rational.IntValue
 import java.math.BigDecimal
 
 abstract class RealValue(isNegative: Boolean) : Expression(charArrayOf(), isNegative) {

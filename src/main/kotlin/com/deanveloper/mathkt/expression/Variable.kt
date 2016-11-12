@@ -1,6 +1,6 @@
 package com.deanveloper.mathkt.expression
 
-import com.deanveloper.mathkt.expression.value.IntValue
+import com.deanveloper.mathkt.expression.value.rational.IntValue
 
 class Variable
 @Deprecated("Use get() for automatic caching", ReplaceWith("Variable[variable]"))
