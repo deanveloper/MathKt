@@ -19,7 +19,7 @@ abstract class Expression(vars: CharArray, val isNegative: Boolean = false) {
         this.vars = vars.distinct().toCharArray()
     }
 
-    operator fun invoke(vararg args: Expression): RealValue {
+    operator fun invoke(vararg args: Expression): Expression {
         return execute(vars.zip(args).toMap())
     }
 
@@ -27,12 +27,8 @@ abstract class Expression(vars: CharArray, val isNegative: Boolean = false) {
 
     abstract fun derive(variable: Char): Expression
 
-    fun execute(args: Map<Char, Expression>): RealValue {
-        if(!args.keys.containsAll(vars.toList())) {
-            throw IllegalArgumentException("args does not supply all necessary arguments!")
-        }
-
-        return insertValues(args).simplify() as RealValue
+    fun execute(args: Map<Char, Expression>): Expression {
+        return insertValues(args).simplify()
     }
 
     abstract fun simplify(): Expression
