@@ -20,7 +20,7 @@ class DivisionExpression(
     ) : this(charArrayOf(variable), f, g, isNegative)
 
     override fun insertValues(args: Map<Char, Expression>): DivisionExpression {
-        return DivisionExpression(vars, f.insertValues(args), g.insertValues(args))
+        return DivisionExpression(vars, f.insertValues(args), g.insertValues(args), isNegative)
     }
 
     override fun derive(variable: Char): Expression {

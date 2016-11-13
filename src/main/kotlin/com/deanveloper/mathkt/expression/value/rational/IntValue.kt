@@ -38,7 +38,7 @@ constructor(val value: BigInteger)
      */
     override fun onPlus(o: RealValue): RealValue {
         return when (o) {
-            is IntValue -> Companion[value + o.value]
+            is IntValue -> IntValue[value + o.value]
             is RationalValue ->
                 RationalValue(
                         (value * o.bottom + o.top),
@@ -54,7 +54,7 @@ constructor(val value: BigInteger)
      */
     override fun onTimes(o: RealValue): RealValue {
         return when (o) {
-            is IntValue -> Companion[value * o.value]
+            is IntValue -> IntValue[value * o.value]
             is RationalValue ->
                 RationalValue(
                         this.value * o.top,
@@ -66,18 +66,18 @@ constructor(val value: BigInteger)
     }
 
     override fun onPow(o: RealValue): RealValue {
-        if (this == Companion[0]) {
-            if (o != Companion[0]) {
-                return Companion[0]
+        if (this == IntValue[0]) {
+            if (o != IntValue[0]) {
+                return IntValue[0]
             } else {
                 throw ArithmeticException("0.pow(0) is undefined!")
             }
         }
-        if (this == Companion[1]) {
-            return Companion[1]
+        if (this == IntValue[1]) {
+            return IntValue[1]
         }
         if (o is IntValue) {
-            return Companion[this.value.pow(o.value.toInt())]
+            return IntValue[this.value.pow(o.value.toInt())]
         } else if (o is RationalValue) {
             val intPart = o.floor()
             val fracPart = (o - intPart) as RationalValue

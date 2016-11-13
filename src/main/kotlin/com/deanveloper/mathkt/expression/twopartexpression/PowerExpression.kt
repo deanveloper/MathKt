@@ -8,21 +8,21 @@ import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.pow
 import java.math.BigDecimal
 
-class ExponentialExpression(
+open class PowerExpression(
         variables: CharArray,
-        f: Expression,
-        g: Expression,
+        val base: Expression,
+        val power: Expression,
         isNegative: Boolean = false
-) : Expression.TwoPartExpression(variables, f, g, isNegative) {
+) : Expression.TwoPartExpression(variables, base, power, isNegative) {
     constructor(
             variable: Char,
-            f: Expression,
-            g: Expression,
+            base: Expression,
+            power: Expression,
             isNegative: Boolean = false
-    ) : this(charArrayOf(variable), f, g, isNegative)
+    ) : this(charArrayOf(variable), base, power, isNegative)
 
-    override fun insertValues(args: Map<Char, Expression>): ExponentialExpression {
-        return ExponentialExpression(vars, f.insertValues(args), g.insertValues(args))
+    override fun insertValues(args: Map<Char, Expression>): PowerExpression {
+        return PowerExpression(vars, f.insertValues(args), g.insertValues(args), isNegative)
     }
 
     override fun derive(variable: Char): Expression {
@@ -52,7 +52,7 @@ class ExponentialExpression(
             if (f is RealValue && g is RealValue) {
                 return f.pow(g)
             }
-            if (f is ExponentialExpression) {
+            if (f is PowerExpression) {
                 return (f.f pow (f.g * g)).simplify()
             }
 
@@ -61,7 +61,7 @@ class ExponentialExpression(
     }
 
     override fun unaryMinus(): Expression {
-        return ExponentialExpression(vars, f, g, !isNegative)
+        return PowerExpression(vars, f, g, !isNegative)
     }
 
     override fun toString() = "${if (isNegative) "-" else ""}($f ^ $g)"

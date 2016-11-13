@@ -43,9 +43,9 @@ abstract class Expression(vars: CharArray, val isNegative: Boolean = false) {
 
     open operator fun div(e: Expression): Expression = DivisionExpression(this.vars + e.vars, this, e)
 
-    open infix fun pow(e: Expression): Expression = ExponentialExpression(this.vars + e.vars, this, e)
+    open infix fun pow(e: Expression): Expression = PowerExpression(this.vars + e.vars, this, e)
 
-    open infix fun root(e: Expression): Expression = ExponentialExpression(this.vars + e.vars, e, IntValue[1] / this)
+    open infix fun root(e: Expression): Expression = PowerExpression(this.vars + e.vars, e, IntValue[1] / this)
 
     open infix fun logOfBase(e: Expression): Expression = LogExpression(this.vars + e.vars, e, this)
 

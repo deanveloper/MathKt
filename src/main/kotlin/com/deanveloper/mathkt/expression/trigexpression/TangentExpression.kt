@@ -1,7 +1,7 @@
 package com.deanveloper.mathkt.expression.trigexpression
 
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.twopartexpression.ExponentialExpression
+import com.deanveloper.mathkt.expression.twopartexpression.PowerExpression
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import com.deanveloper.mathkt.expression.value.rational.IntValue
 import com.deanveloper.mathkt.expression.value.irrational.IrrationalValue
@@ -26,7 +26,7 @@ class TangentExpression(
 
     override fun derive(variable: Char): Expression {
         return MultiplicationExpression(vars,
-                ExponentialExpression(vars,
+                PowerExpression(vars,
                         SecantExpression(vars, f),
                         IntValue[2]
                 ),

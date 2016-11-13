@@ -4,7 +4,7 @@ import com.deanveloper.mathkt.expression.value.RealValue
 import com.deanveloper.mathkt.expression.Variable
 import com.deanveloper.mathkt.expression.trigexpression.SineExpression
 import com.deanveloper.mathkt.expression.twopartexpression.AdditionExpression
-import com.deanveloper.mathkt.expression.twopartexpression.ExponentialExpression
+import com.deanveloper.mathkt.expression.twopartexpression.PowerExpression
 import com.deanveloper.mathkt.expression.twopartexpression.LogExpression
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import com.deanveloper.mathkt.expression.value.rational.IntValue
@@ -18,7 +18,7 @@ fun main(vararg args: String) {
     val exp = SineExpression('x',
             LogExpression('x',
                     IrrationalValue.E,
-                    ExponentialExpression('x', Variable['x'], IntValue[3]) + IntValue[0] * Variable['x']
+                    PowerExpression('x', Variable['x'], IntValue[3]) + IntValue[0] * Variable['x']
             )
     )
 

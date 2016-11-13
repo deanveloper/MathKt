@@ -19,7 +19,7 @@ class MultiplicationExpression(
     ) : this(charArrayOf(variable), f, g, isNegative)
 
     override fun insertValues(args: Map<Char, Expression>): MultiplicationExpression {
-        return MultiplicationExpression(vars, f.insertValues(args), g.insertValues(args))
+        return MultiplicationExpression(vars, f.insertValues(args), g.insertValues(args), isNegative)
     }
 
     override fun derive(variable: Char): Expression {

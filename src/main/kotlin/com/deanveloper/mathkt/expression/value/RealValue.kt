@@ -43,7 +43,7 @@ abstract class RealValue(isNegative: Boolean) : Expression(charArrayOf(), isNega
     }
 
     override infix fun root(e: Expression): Expression {
-        return pow((IntValue[1] / e).simplify())
+        return super.root(e).simplify()
     }
 
     operator fun mod(o: RealValue): RealValue = (this - ((this / o) as RealValue).floor() * o) as RealValue

@@ -19,7 +19,7 @@ class LogExpression(
     ) : this(charArrayOf(variable), base, f, isNegative)
 
     override fun insertValues(args: Map<Char, Expression>): LogExpression {
-        return LogExpression(vars, base.insertValues(args), f.insertValues(args))
+        return LogExpression(vars, base.insertValues(args), f.insertValues(args), isNegative)
     }
 
     override fun derive(variable: Char): Expression {
@@ -40,7 +40,7 @@ class LogExpression(
     override fun simplify(): Expression {
         val simp = f.simplify() logOfBase base.simplify()
         with(simp) {
-            if (f is ExponentialExpression) {
+            if (f is PowerExpression) {
                 return (f.g * (f.f logOfBase base)).simplify()
             }
             if (f is RealValue) {
