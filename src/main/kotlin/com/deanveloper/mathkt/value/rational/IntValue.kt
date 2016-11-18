@@ -1,7 +1,7 @@
-package com.deanveloper.mathkt.expression.value.rational
+package com.deanveloper.mathkt.value.rational
 
-import com.deanveloper.mathkt.expression.value.rational.RationalValue
-import com.deanveloper.mathkt.expression.value.RealValue
+import com.deanveloper.mathkt.value.rational.RationalValue
+import com.deanveloper.mathkt.value.RealValue
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.*

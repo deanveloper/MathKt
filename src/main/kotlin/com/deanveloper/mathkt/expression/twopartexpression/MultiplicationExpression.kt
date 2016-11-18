@@ -1,8 +1,8 @@
 package com.deanveloper.mathkt.expression.twopartexpression
 
 import com.deanveloper.mathkt.expression.Expression
-import com.deanveloper.mathkt.expression.value.rational.IntValue
-import com.deanveloper.mathkt.expression.value.RealValue
+import com.deanveloper.mathkt.value.rational.IntValue
+import com.deanveloper.mathkt.value.RealValue
 import java.math.BigDecimal
 
 class MultiplicationExpression(

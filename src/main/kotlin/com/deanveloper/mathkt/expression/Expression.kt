@@ -1,9 +1,9 @@
 package com.deanveloper.mathkt.expression
 
 import com.deanveloper.mathkt.expression.twopartexpression.*
-import com.deanveloper.mathkt.expression.value.rational.IntValue
-import com.deanveloper.mathkt.expression.value.irrational.IrrationalValue
-import com.deanveloper.mathkt.expression.value.RealValue
+import com.deanveloper.mathkt.value.rational.IntValue
+import com.deanveloper.mathkt.value.irrational.IrrationalValue
+import com.deanveloper.mathkt.value.RealValue
 import java.util.*
 
 /**

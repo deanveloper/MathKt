@@ -2,10 +2,10 @@ package com.deanveloper.mathkt.expression.trigexpression
 
 import com.deanveloper.mathkt.expression.Expression
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
-import com.deanveloper.mathkt.expression.value.rational.IntValue
-import com.deanveloper.mathkt.expression.value.irrational.IrrationalValue
-import com.deanveloper.mathkt.expression.value.rational.RationalValue
-import com.deanveloper.mathkt.expression.value.RealValue
+import com.deanveloper.mathkt.value.rational.IntValue
+import com.deanveloper.mathkt.value.irrational.IrrationalValue
+import com.deanveloper.mathkt.value.rational.RationalValue
+import com.deanveloper.mathkt.value.RealValue
 
 /**
  * @author Dean
