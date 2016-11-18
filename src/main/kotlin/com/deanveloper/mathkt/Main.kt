@@ -8,7 +8,6 @@ import com.deanveloper.mathkt.expression.twopartexpression.PowerExpression
 import com.deanveloper.mathkt.expression.twopartexpression.LogExpression
 import com.deanveloper.mathkt.expression.twopartexpression.MultiplicationExpression
 import com.deanveloper.mathkt.value.rational.IntValue
-import com.deanveloper.mathkt.value.irrational.IrrationalValue
 import java.math.BigDecimal
 
 /**

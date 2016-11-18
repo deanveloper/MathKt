@@ -1,6 +1,5 @@
 package com.deanveloper.mathkt.value.rational
 
-import com.deanveloper.mathkt.value.rational.RationalValue
 import com.deanveloper.mathkt.value.RealValue
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -36,7 +35,7 @@ constructor(val value: BigInteger)
     /**
      * Optimized for IntValue
      */
-    override fun onPlus(o: RealValue): RealValue {
+    override fun plus(o: RealValue): RealValue {
         return when (o) {
             is IntValue -> IntValue[value + o.value]
             is RationalValue ->
@@ -52,7 +51,7 @@ constructor(val value: BigInteger)
     /**
      * Optimized for IntValue
      */
-    override fun onTimes(o: RealValue): RealValue {
+    override fun times(o: RealValue): RealValue {
         return when (o) {
             is IntValue -> IntValue[value * o.value]
             is RationalValue ->
@@ -65,34 +64,59 @@ constructor(val value: BigInteger)
         }
     }
 
-    override fun onPow(o: RealValue): RealValue {
+    override fun pow(o: RealValue): RealValue {
         if (this == IntValue[0]) {
             if (o != IntValue[0]) {
-                return IntValue[0]
+                return IntValue[1]
             } else {
                 throw ArithmeticException("0.pow(0) is undefined!")
             }
         }
         if (this == IntValue[1]) {
+            return this
+        }
+        if (o == IntValue[0]) {
             return IntValue[1]
+        }
+        if (o == IntValue[1]) {
+            return this
         }
         if (o is IntValue) {
             return IntValue[this.value.pow(o.value.toInt())]
         } else if (o is RationalValue) {
-            val intPart = o.floor()
-            val fracPart = (o - intPart) as RationalValue
+            val newO = o.simplify()
+            if (newO is IntValue) {
+                return pow(newO)
+            } else if (newO is RationalValue) {
+                return pow(IntValue[newO.top]).root(IntValue[newO.bottom])
+            }
+        }
 
-            TODO("Not implemented yet")
+        TODO("Not implemented yet")
+    }
+
+    override fun root(o: RealValue): RealValue {
+        if (this == IntValue[0]) {
+            return IntValue[0]
+        }
+        if (this == IntValue[1]) {
+            return IntValue[1]
+        }
+        if (o is IntValue) {
+            return RootValue(o, this)
+        } else if (o is RationalValue) {
+            val newO = o.simplify()
+            if (newO is IntValue) {
+                return pow(newO)
+            } else if (newO is RationalValue) {
+                return pow(IntValue[newO.top]).root(IntValue[newO.bottom])
+            }
         }
 
         TODO("Not implemented yet")
     }
 
     override operator fun unaryMinus() = IntValue(-value)
-
-    override fun floor() = this
-
-    override fun simplify() = this // do nothing, integers are fully simplified
 
     override fun toString() = value.toString()
 
