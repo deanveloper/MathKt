@@ -5,21 +5,13 @@ import com.deanveloper.mathkt.value.RealValue
 /**
  * @author Dean
  */
-internal class ExpressionTree(val root: Node) {
+internal class ExpressionTree(private val root: Node) {
 
     internal inner class Node(
-            val exp1: Expression,
+            val exp1: Node,
             val op: Operator,
-            val exp2: Expression
+            val exp2: Node
     )
-
-    internal class Expression(
-            val op: Operator?,
-            val num: RealValue?
-    ) {
-        constructor(op: Operator) : this(op, null)
-        constructor(num: RealValue) : this(null, num)
-    }
 }
 
 internal enum class Operator {
