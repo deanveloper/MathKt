@@ -9,7 +9,7 @@ import java.math.BigInteger
  * @author Dean
  */
 open class RationalValue(val top: BigInteger, val bottom: BigInteger) : RealValue {
-
+    
     override val approx: BigDecimal by lazy {
         BigDecimal(top) / BigDecimal(bottom)
     }
@@ -59,10 +59,14 @@ open class RationalValue(val top: BigInteger, val bottom: BigInteger) : RealValu
     }
 
     override fun pow(o: RealValue): RealValue {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO()
     }
-
-    fun simplify(): RealValue {
+    
+    override fun root(o: RealValue): RealValue {
+        TODO()
+    }
+    
+    override fun simplify(): RealValue {
         if (top % bottom == BigInteger.ZERO) {
             return IntValue[top / bottom]
         }

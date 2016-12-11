@@ -34,4 +34,6 @@ interface RealValue {
     fun pow(o: RealValue): RealValue
 
     fun root(o: RealValue): RealValue
+    
+    fun simplify(): RealValue
 }

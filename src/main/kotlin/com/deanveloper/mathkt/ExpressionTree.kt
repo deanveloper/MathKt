@@ -8,10 +8,16 @@ import com.deanveloper.mathkt.value.RealValue
 internal class ExpressionTree(private val root: Node) {
 
     internal inner class Node(
-            val exp1: Node,
-            val op: Operator,
-            val exp2: Node
-    )
+            val exp1: Node?,
+            val op: Operator?,
+            val value: RealValue?,
+            val exp2: Node?
+    ) {
+        val isValue = value != null
+        val isOperator = op != null
+        
+        
+    }
 }
 
 internal enum class Operator {

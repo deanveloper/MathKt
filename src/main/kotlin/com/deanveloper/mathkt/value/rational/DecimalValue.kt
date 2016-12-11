@@ -8,7 +8,7 @@ import java.math.BigInteger
  * @author Dean
  */
 class DecimalValue(val exact: BigDecimal) : RationalValue(convertToFrac(exact).first, convertToFrac(exact).second) {
-
+    
     companion object {
         @JvmStatic fun convertToFrac(exact: BigDecimal): Pair<BigInteger, BigInteger> {
             val mult = Math.max(0, exact.stripTrailingZeros().scale())
@@ -33,6 +33,10 @@ class DecimalValue(val exact: BigDecimal) : RationalValue(convertToFrac(exact).f
     }
 
     override fun pow(o: RealValue): RealValue {
+        TODO()
+    }
+    
+    override fun root(o: RealValue): RealValue {
         TODO()
     }
 }

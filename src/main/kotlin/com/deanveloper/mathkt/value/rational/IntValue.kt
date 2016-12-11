@@ -1,9 +1,9 @@
 package com.deanveloper.mathkt.value.rational
 
+import com.deanveloper.mathkt.value.CacheableCompanion
 import com.deanveloper.mathkt.value.RealValue
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.*
 
 /**
  * @author Dean
@@ -15,17 +15,12 @@ constructor(val value: BigInteger)
 
     override val approx: BigDecimal by lazy { BigDecimal(value) }
 
-    companion object {
-        @JvmStatic
-        private val cache = WeakHashMap<BigInteger, IntValue>()
-
-        @JvmStatic operator fun get(value: BigInteger): IntValue = cache.getOrPut(value) { IntValue(value) }
+    companion object : CacheableCompanion<BigInteger, IntValue>(::IntValue) {
         @JvmStatic operator fun get(value: Long) = get(BigInteger.valueOf(value))
         @JvmStatic operator fun get(value: Int) = get(BigInteger.valueOf(value.toLong()))
         @JvmStatic operator fun get(value: Short) = get(BigInteger.valueOf(value.toLong()))
         @JvmStatic operator fun get(value: Byte) = get(BigInteger.valueOf(value.toLong()))
 
-        @JvmStatic fun valueOf(value: BigInteger) = get(value)
         @JvmStatic fun valueOf(value: Long) = get(value)
         @JvmStatic fun valueOf(value: Int) = get(value)
         @JvmStatic fun valueOf(value: Short) = get(value)
@@ -92,7 +87,7 @@ constructor(val value: BigInteger)
             }
         }
 
-        TODO("Not implemented yet")
+        TODO()
     }
 
     override fun root(o: RealValue): RealValue {
@@ -103,7 +98,8 @@ constructor(val value: BigInteger)
             return IntValue[1]
         }
         if (o is IntValue) {
-            return RootValue(o, this)
+            TODO("Will implement irrational values in the future")
+            // return RootValue(o, this)
         } else if (o is RationalValue) {
             val newO = o.simplify()
             if (newO is IntValue) {
@@ -113,7 +109,11 @@ constructor(val value: BigInteger)
             }
         }
 
-        TODO("Not implemented yet")
+        TODO()
+    }
+    
+    override fun simplify(): RealValue {
+        return this
     }
 
     override operator fun unaryMinus() = IntValue(-value)
